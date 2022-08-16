@@ -41,6 +41,7 @@ pipeline {
             volumeMounts:
               - name: docker
                 mountPath: /var/run/docker.sock
+    '''
 }
 }
 }
