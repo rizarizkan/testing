@@ -1,4 +1,4 @@
-node {
+pipeline {
 agent {
     kubernetes {
       activeDeadlineSeconds 60
@@ -61,11 +61,17 @@ agent {
                  git url:'https://github.com/rizarizkan/testing.git', branch:'main'
            }   
         }    
-        stage('Test') {
+         stage('Deploy') {
+            when {
+              expression {
+                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
+              }
+            }
             steps {
-                echo 'Testing..'
+                sh 'echo "sukses oi"'
             }
         }
+    }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
