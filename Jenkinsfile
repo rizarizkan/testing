@@ -70,8 +70,6 @@ agent {
             }
             steps {
                 sh 'echo "sukses oi"'
-            }
-            steps {
                 sh 'echo "sukses oi2"'
             }
         }
