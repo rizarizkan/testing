@@ -60,7 +60,8 @@ agent {
              steps {
                  git url:'https://github.com/rizarizkan/testing.git', branch:'main'
            }   
-        }    
+        }   
+        
          stage('Deploy') {
             when {
               expression {
@@ -69,11 +70,6 @@ agent {
             }
             steps {
                 sh 'echo "sukses oi"'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
             }
         }
     }
