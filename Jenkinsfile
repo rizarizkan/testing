@@ -53,12 +53,14 @@ agent {
       '''
     }
   }
+    
+    
     stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
-            }
-        }
+        stage('Checkout Source') {
+             steps {
+                 git url:'https://github.com/rizarizkan/testing.git', branch:'main'
+           }   
+        }    
         stage('Test') {
             steps {
                 echo 'Testing..'
