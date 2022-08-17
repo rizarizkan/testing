@@ -1,4 +1,4 @@
-pipeline {
+node {
 agent {
     kubernetes {
       activeDeadlineSeconds 60
