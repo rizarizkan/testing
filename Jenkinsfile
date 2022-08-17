@@ -71,7 +71,6 @@ agent {
                 sh 'echo "sukses oi"'
             }
         }
-    }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
