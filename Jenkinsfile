@@ -1,3 +1,4 @@
+def username = 'Jenkins'
 pipeline {
 agent {
     kubernetes {
@@ -71,7 +72,6 @@ agent {
             steps {
                 sh 'echo "sukses oi"'
                 sh 'echo "sukses oi2"'
-                def username = 'Jenkins'
                 echo 'Hello Mr. ${username}'
                 echo "I said, Hello Mr. ${username}"
             }
