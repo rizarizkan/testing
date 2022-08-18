@@ -63,7 +63,6 @@ agent {
         stage('Example') {
             steps {
                 echo 'Hello World'
-                echo '$GCHAT_NOTIF'
             }
         }
     
@@ -84,16 +83,20 @@ agent {
         }
    }
     
+    node {
+    withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'SECRET')]) { //set SECRET with the credential content
+        echo "My secret text is '${SECRET}'"
+    }
+}
+    
     post { 
         success { 
-            withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'TOKEN')]) {
-                googlechatnotification url: '$TOKEN', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
+            googlechatnotification url: '${SECRET}', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
         }
      }
         failure { 
-            withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'TOKEN')]) {
-                googlechatnotification url: '$TOKEN', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
-            }
+                googlechatnotification url: '${SECRET}', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
+            
         }    
     }
 }
