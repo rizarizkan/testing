@@ -74,6 +74,7 @@ agent {
                 echo "JOB_NAME = ${env.JOB_NAME}"
                 echo "NODE_NAME = ${env.NODE_NAME}"
                 echo "WORKSPACE = ${env.WORKSPACE}"
+                sh "exit 1"
             }
         }
    }
@@ -81,6 +82,9 @@ agent {
     post { 
         success { 
              googlechatnotification url: 'https://chat.googleapis.com/v1/spaces/AAAAmk6FRVM/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=lLyEB-ioqic3E2Q8ftdAdpkaqbMGO_yqsIBW2dXrQ5U%3D', message: 'Success Build', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
+        }
+        failure { 
+             googlechatnotification url: 'https://chat.googleapis.com/v1/spaces/AAAAmk6FRVM/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=lLyEB-ioqic3E2Q8ftdAdpkaqbMGO_yqsIBW2dXrQ5U%3D', message: 'Build Failure', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
         }
     }
 }
