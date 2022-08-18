@@ -62,6 +62,24 @@ agent {
             }
         }
     }
+    
+    stages {
+        stage('display predefined variables') {
+            steps {
+                echo ${BUILD_ID}
+                echo ${BUILD_NUMBER}
+                echo ${BUILD_TAG}
+                echo ${BUILD_URL}
+                echo ${EXECUTOR_NUMBER}
+                echo ${JAVA_HOME}
+                echo ${JENKINS_URL}
+                echo ${JOB_NAME}
+                echo ${NODE_NAME}
+                echo ${WORKSPACE}
+            }
+        }
+    }
+    
     post { 
         success { 
              googlechatnotification url: 'https://chat.googleapis.com/v1/spaces/AAAAmk6FRVM/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=lLyEB-ioqic3E2Q8ftdAdpkaqbMGO_yqsIBW2dXrQ5U%3D', message: 'Success Build', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
