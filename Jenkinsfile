@@ -61,7 +61,10 @@ agent {
              steps {
                  git url:'https://github.com/rizarizkan/testing.git', branch:'main'
            }   
-        }   
+             steps {
+                 sh 'echo test'
+        }
+        }
         
          stage('Deploy') {
             when {
