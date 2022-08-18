@@ -63,18 +63,18 @@ agent {
         }
     }
     
-        stage('display predefined variables') {
+        stage('display') {
             steps {
-                echo ${BUILD_ID}
-                echo ${BUILD_NUMBER}
-                echo ${BUILD_TAG}
-                echo ${BUILD_URL}
-                echo ${EXECUTOR_NUMBER}
-                echo ${JAVA_HOME}
-                echo ${JENKINS_URL}
-                echo ${JOB_NAME}
-                echo ${NODE_NAME}
-                echo ${WORKSPACE}
+                echo "${env.BUILD_ID}"
+                echo "${env.BUILD_NUMBER}"
+                echo "${env.BUILD_TAG}"
+                echo "${env.BUILD_URL}"
+                echo "${env.EXECUTOR_NUMBER}"
+                echo "${env.JAVA_HOME}"
+                echo "${env.JENKINS_URL}"
+                echo "${env.JOB_NAME}"
+                echo "${env.NODE_NAME}"
+                echo "${env.WORKSPACE}"
             }
         }
     
