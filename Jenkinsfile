@@ -63,7 +63,6 @@ agent {
         }
     }
     
-    stages {
         stage('display predefined variables') {
             steps {
                 echo ${BUILD_ID}
@@ -78,7 +77,6 @@ agent {
                 echo ${WORKSPACE}
             }
         }
-    }
     
     post { 
         success { 
