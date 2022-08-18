@@ -71,9 +71,15 @@ agent {
             }
             steps {
                 sh 'echo "sukses oi"'
-                sh 'echo "sukses oi2"'
                 echo 'Hello Mr. ${username}'
                 echo "I said, Hello Mr. ${username}"
+                echo 'Hello World'
+
+                script {
+                    def browsers = ['chrome', 'firefox']
+                    for (int i = 0; i < browsers.size(); ++i) {
+                        echo "Testing the ${browsers[i]} browser"
+                    }
             }
         }
     }
