@@ -65,10 +65,10 @@ agent {
         }
     
         stage('display') {
+           environment {
+              GCHAT_NOTIF = credentials('jenkins-notif-gchat')
+             }
             steps {
-                environment {
-        GCHAT_NOTIF = credentials('jenkins-notif-gchat')
-    }
                 echo "BUILD_ID = ${env.BUILD_ID}"
                 echo "BUILD_NUMBER = ${env.BUILD_NUMBER}"
                 echo "BUILD_TAG = ${env.BUILD_TAG}"
