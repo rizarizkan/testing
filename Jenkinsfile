@@ -79,19 +79,16 @@ agent {
                 echo "JOB_NAME = ${env.JOB_NAME}"
                 echo "NODE_NAME = ${env.NODE_NAME}"
                 echo "WORKSPACE = ${env.WORKSPACE}"
-                sh "exit 1"
             }
         }
    }
     
- 
-    
     post { 
         success { 
-            googlechatnotification url: '${GHAT_NOTIF}', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
+            googlechatnotification url: '$GHAT_NOTIF', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
      }
         failure { 
-             googlechatnotification url: '${GCHAT_NOTIF}', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
+             googlechatnotification url: '$GCHAT_NOTIF', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
         
         }    
     }
