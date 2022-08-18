@@ -61,7 +61,6 @@ agent {
                 echo 'Hello World'
             }
         }
-    }
     
         stage('display') {
             steps {
@@ -77,6 +76,7 @@ agent {
                 echo "${env.WORKSPACE}"
             }
         }
+   }
     
     post { 
         success { 
