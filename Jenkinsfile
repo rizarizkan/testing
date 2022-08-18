@@ -55,6 +55,10 @@ agent {
     }
   }
     
+    environment {
+        GCHAT_NOTIF = credentials('jenkins-notif-gchat')
+    }
+    
    stages {
         stage('Example') {
             steps {
@@ -84,7 +88,7 @@ agent {
              googlechatnotification url: 'https://chat.googleapis.com/v1/spaces/AAAAmk6FRVM/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=lLyEB-ioqic3E2Q8ftdAdpkaqbMGO_yqsIBW2dXrQ5U%3D', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
         }
         failure { 
-             withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'GCHAT_NOTIF')]) {
+             ##withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'GCHAT_NOTIF')]) {
              googlechatnotification url: '$GCHAT_NOTIF', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
             }
         }    
