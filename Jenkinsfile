@@ -85,11 +85,14 @@ agent {
     
     post { 
         success { 
-            googlechatnotification url: '${GCHAT_NOTIF}', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
+            withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'TOKEN')]) {
+            googlechatnotification url: '$TOKEN', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
         }
+     }
         failure { 
-            googlechatnotification url: '${GCHAT_NOTIF}', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
-            
+            withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'TOKEN')]) {
+                googlechatnotification url: '$TOKEN', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
+            }
         }    
     }
 }
