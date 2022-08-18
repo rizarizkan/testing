@@ -86,7 +86,8 @@ agent {
         failure { 
              withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'GCHAT_NOTIF')]) {
              googlechatnotification url: '$GCHAT_NOTIF', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
-        }
+            }
+        }    
     }
 }
 
