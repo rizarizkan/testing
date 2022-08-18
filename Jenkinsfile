@@ -85,10 +85,10 @@ agent {
     
     post { 
         success { 
-             googlechatnotification url: 'https://chat.googleapis.com/v1/spaces/AAAAmk6FRVM/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=lLyEB-ioqic3E2Q8ftdAdpkaqbMGO_yqsIBW2dXrQ5U%3D', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
+            googlechatnotification url: '${GCHAT_NOTIF}', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
         }
         failure { 
-             googlechatnotification url: '$GCHAT_NOTIF', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
+            googlechatnotification url: '${GCHAT_NOTIF}', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
             
         }    
     }
