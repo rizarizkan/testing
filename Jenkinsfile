@@ -55,9 +55,7 @@ agent {
     }
   }
     
-    environment {
-        GCHAT_NOTIF = credentials('jenkins-notif-gchat')
-    }
+    
     
    stages {
         stage('Example') {
@@ -68,6 +66,9 @@ agent {
     
         stage('display') {
             steps {
+                environment {
+        GCHAT_NOTIF = credentials('jenkins-notif-gchat')
+    }
                 echo "BUILD_ID = ${env.BUILD_ID}"
                 echo "BUILD_NUMBER = ${env.BUILD_NUMBER}"
                 echo "BUILD_TAG = ${env.BUILD_TAG}"
@@ -83,20 +84,16 @@ agent {
         }
    }
     
-   node {
-    withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'SECRET')]) { //set SECRET with the credential content
-        echo "My secret text is '${SECRET}'"
-    }
+ 
     
     post { 
         success { 
-            googlechatnotification url: '${SECRET}', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
+            googlechatnotification url: '${GHAT_NOTIF}', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
      }
         failure { 
-                googlechatnotification url: '${SECRET}', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
+             googlechatnotification url: '${GCHAT_NOTIF}', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
         
         }    
     }
 }
 
-}
