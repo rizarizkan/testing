@@ -63,6 +63,7 @@ agent {
         stage('Example') {
             steps {
                 echo 'Hello World'
+                echo '$GCHAT_NOTIF'
             }
         }
     
@@ -86,7 +87,7 @@ agent {
     post { 
         success { 
             withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'TOKEN')]) {
-            googlechatnotification url: '$TOKEN', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
+                googlechatnotification url: '$TOKEN', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
         }
      }
         failure { 
