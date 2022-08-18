@@ -83,11 +83,10 @@ agent {
         }
    }
     
-    node {
+   node {
     withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'SECRET')]) { //set SECRET with the credential content
         echo "My secret text is '${SECRET}'"
     }
-}
     
     post { 
         success { 
@@ -100,4 +99,4 @@ agent {
     }
 }
 
-
+}
