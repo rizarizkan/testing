@@ -86,8 +86,8 @@ agent {
         success { 
             sh 'echo "$GCHAT_NOTIF_USR"'
             sh 'echo "$GCHAT_NOTIF_PSW"'
-            withCredentials(bindings: [usernamePassword(credentialsId: 'jenkins-notif-gchat', passwordVariable: 'GCHAT_NOTIF_PSW', usernameVariable: 'GITHUB_NOTIF_USR')]) {
-            googlechatnotification url: 'https://chat.googleapis.com/v1/spaces/AAAAmk6FRVM/messages?key=\$GCHAT_NOTIF_USR&token=\$GCHAT_NOTIF_PSW', message: '*SUCCESS* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
+            withCredentials(bindings: [token(credentialsId: 'jenkins-notif-gchat', Variable: 'GCHAT_NOTIF_JENKINS')]) {
+            googlechatnotification url: 'https://chat.googleapis.com/v1/spaces/AAAAmk6FRVM/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=\$GCHAT_NOTIF_JENKINS', message: '*SUCCESS* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
             }
         }
     }
