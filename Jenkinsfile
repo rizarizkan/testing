@@ -67,6 +67,7 @@ agent {
         }
     
         stage('display') {
+            withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'GCHAT_NOTIF_JENKINS')]) {
             steps {
                 echo "BUILD_ID = ${env.BUILD_ID}"
                 echo "BUILD_NUMBER = ${env.BUILD_NUMBER}"
@@ -78,15 +79,15 @@ agent {
                 echo "JOB_NAME = ${env.JOB_NAME}"
                 echo "NODE_NAME = ${env.NODE_NAME}"
                 echo "WORKSPACE = ${env.WORKSPACE}"
+                googlechatnotification url: '$GCHAT_NOTIF_JENKINS', message: '*SUCCESS* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
+               }
             }
         }
     }
     
-    post { 
-        success { 
-            withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'GCHAT_NOTIF_JENKINS')]) {
-            googlechatnotification url: '$GCHAT_NOTIF_JENKINS', message: '*SUCCESS* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
-            }
+          post { 
+             success { 
+                googlechatnotification url: '$GCHAT_NOTIF_JENKINS', message: '*SUCCESS* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
         }
     }
 }
