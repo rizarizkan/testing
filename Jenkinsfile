@@ -83,10 +83,8 @@ agent {
     }
     
     post { 
-        withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'SECRET')]) {
         success { 
-                googlechatnotification url: '$SECRET', message: '*SUCCESS* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
-           }   
+            googlechatnotification url: 'https://chat.googleapis.com/v1/spaces/AAAAmk6FRVM/messages?key=$GCHAT_NOTIF_USR&token=$GCHAT_NOTIF_PSW', message: '*SUCCESS* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
         }
     }
 }
