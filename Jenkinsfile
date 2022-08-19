@@ -1,4 +1,10 @@
 def username = 'Jenkins'
+ node {
+         withCredentials([string(credentialsId: 'jenkins-notif-chat', variable: 'SECRET')]) {
+         googlechatnotification url: '$SECRET', message: '*SUCCESS* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
+  }
+
+
 pipeline {
 agent {
     kubernetes {
@@ -54,15 +60,11 @@ agent {
       '''
     }
   }
-    
+}    
    //environment {
      //         GCHAT_NOTIF = credentials('jenkins-notif-gchat')
        //       }
-   node {
-         withCredentials([string(credentialsId: 'jenkins-notif-chat', variable: 'SECRET')]) {
-         googlechatnotification url: '$SECRET', message: '*SUCCESS* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
-  }
-} 
+  
     
     
    stages {
