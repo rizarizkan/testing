@@ -65,9 +65,6 @@ agent {
         }
     
         stage('display') {
-           environment {
-              GCHAT_NOTIF = credentials('jenkins-notif-gchat')
-             }
             steps {
                 echo "BUILD_ID = ${env.BUILD_ID}"
                 echo "BUILD_NUMBER = ${env.BUILD_NUMBER}"
@@ -85,9 +82,15 @@ agent {
     
     post { 
         success { 
+            environment {
+              GCHAT_NOTIF = credentials('jenkins-notif-gchat')
+             }
             googlechatnotification url: '$GHAT_NOTIF', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
      }
         failure { 
+             environment {
+              GCHAT_NOTIF = credentials('jenkins-notif-gchat')
+             }
              googlechatnotification url: '$GCHAT_NOTIF', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
         
         }    
