@@ -121,7 +121,7 @@ agent {
          
        post { 
              failure {
-                googlechatnotification url: 'id:jenkins-notif-gchat', message: '*FAILED* Build Job *${JOB_NAME}* - ${JOB_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
+                googlechatnotification url: 'id:jenkins-notif-gchat', message: '*FAILED* Build Job *${JOB_NAME}* - ${JOB_URL} - commit ${GIT_COMMIT}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
       } 
     }
   }
