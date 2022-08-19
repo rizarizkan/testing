@@ -81,18 +81,11 @@ agent {
    }
     
     post { 
-        success { 
-            environment {
-              GCHAT_NOTIF = credentials('jenkins-notif-gchat')
-             }
-            googlechatnotification url: '$GHAT_NOTIF', message: '*SUCCESS* Job ${JOB_NAME}, ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
-     }
         failure { 
-             environment {
+            script {
               GCHAT_NOTIF = credentials('jenkins-notif-gchat')
-             }
-             googlechatnotification url: '$GCHAT_NOTIF', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true'
-        
+              }
+              googlechatnotification url: '$GCHAT_NOTIF', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
         }    
     }
 }
