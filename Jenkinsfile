@@ -76,13 +76,12 @@ agent {
                 echo "JOB_NAME = ${env.JOB_NAME}"
                 echo "NODE_NAME = ${env.NODE_NAME}"
                 echo "WORKSPACE = ${env.WORKSPACE}"
-                sh "exit 1"
             }
         }
    }
     
     post { 
-        failure { 
+        success { 
             script {
               GCHAT_NOTIF = credentials('jenkins-notif-gchat')
               }
