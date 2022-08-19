@@ -81,7 +81,6 @@ agent {
                 echo "WORKSPACE = ${env.WORKSPACE}" 
             }
         }
-    }
     
           post { 
              always {
@@ -91,3 +90,4 @@ agent {
       }
     }
   }
+}
