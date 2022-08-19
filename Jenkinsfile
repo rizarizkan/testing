@@ -85,8 +85,7 @@ agent {
     post { 
         success { 
           //    withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'SECRET')]) {
-                 googlechatnotification url: 'AAAAmk6FRVM:jenkins-notif-gchat', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
-          // } 
+                 googlechatnotification url: 'AAAAmk6FRVM:lLyEB-ioqic3E2Q8ftdAdpkaqbMGO_yqsIBW2dXrQ5U%3D', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
         }     
     }
 }
