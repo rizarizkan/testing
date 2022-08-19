@@ -54,7 +54,6 @@ agent {
       '''
     }
   }
-}    
    //environment {
      //         GCHAT_NOTIF = credentials('jenkins-notif-gchat')
        //       }
