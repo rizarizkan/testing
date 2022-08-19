@@ -79,15 +79,20 @@ agent {
                 echo "JOB_NAME = ${env.JOB_NAME}"
                 echo "NODE_NAME = ${env.NODE_NAME}"
                 echo "WORKSPACE = ${env.WORKSPACE}" 
-            }
-        }
-    
-          post { 
+                
+           post { 
              always {
                 withCredentials([string(credentialsId: 'jenkins-notif-gchat', variable: 'GCHAT_NOTIF_JENKINS')]) {
                 googlechatnotification url: '${env.GCHAT_NOTIF_JENKINS}', message: '*SUCCESS* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
         }
       }
+            }
+        }
+   }
+         
+    
+    
+    
     }
   }
-}
+
