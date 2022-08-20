@@ -1,7 +1,6 @@
 def username = 'Jenkins'
 pipeline {
 agent {
-    label "admin-agent"
     kubernetes {
       activeDeadlineSeconds 60
       nodeSelector 'beta.kubernetes.io/os=linux,devtools=true'
