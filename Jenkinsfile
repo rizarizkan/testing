@@ -1,6 +1,7 @@
 def username = 'Jenkins'
 pipeline {
 agent {
+    label "admin-agent"
     kubernetes {
       activeDeadlineSeconds 60
       nodeSelector 'beta.kubernetes.io/os=linux,devtools=true'
@@ -119,10 +120,10 @@ agent {
         }
    }
          
-       post { 
-             failure {
-                googlechatnotification url: 'id:jenkins-notif-gchat', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
-      } 
-    }
+      // post { 
+      //       failure {
+      //          googlechatnotification url: 'id:jenkins-notif-gchat', message: '*FAILED* Build Job *${JOB_NAME}* - ${BUILD_URL}', notifyAborted: 'true', notifyFailure: 'true', notifyNotBuilt: 'true', notifySuccess: 'true', notifyUnstable: 'true', notifyBackToNormal: 'true', suppressInfoLoggers: 'true', sameThreadNotification: 'true' 
+     // } 
+    //}
   }
 
