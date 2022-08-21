@@ -66,7 +66,6 @@ agent {
         stage('Example') {
             agent {
               docker {
-               label 'docker'
                image 'python:3.7'
     }
 }
