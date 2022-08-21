@@ -54,14 +54,13 @@ agent {
                 mountPath: /usr/lib/bundle
       '''
     }
+  }
+    
     docker {
         image 'maven:3.8.1-adoptopenjdk-11'
         label 'my-defined-label'
         args  '-v /tmp:/tmp'
     }
-  }
-    
-    
     
    environment {
               GCHAT_NOTIF = credentials('jenkins-notif-gchat')
