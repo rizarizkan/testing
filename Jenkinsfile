@@ -2,6 +2,7 @@ def username = 'Jenkins'
 pipeline {
 agent {
     kubernetes {
+      label 'k8s'
       activeDeadlineSeconds 60
       nodeSelector 'beta.kubernetes.io/os=linux,devtools=true'
       yaml'''
@@ -54,6 +55,12 @@ agent {
       '''
     }
   }
+    agent {
+        docker {
+            image 'nginx'
+            label 'docker-nginx'
+        }
+    }
     
     
    environment {
