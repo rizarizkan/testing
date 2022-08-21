@@ -56,11 +56,7 @@ agent {
     }
   }
     
-    docker {
-        image 'maven:3.8.1-adoptopenjdk-11'
-        label 'my-defined-label'
-        args  '-v /tmp:/tmp'
-    }
+    
     
    environment {
               GCHAT_NOTIF = credentials('jenkins-notif-gchat')
@@ -68,6 +64,12 @@ agent {
     
    stages {
         stage('Example') {
+            agent {
+              docker {
+               label 'docker'
+               image 'python:3.7'
+    }
+}
             steps {
                 echo 'Hello World'
             }
