@@ -62,11 +62,7 @@ agent {
     
    stages {
         stage('Example') {
-            agent {
-                docker { image 'maven:3.8.1-adoptopenjdk-11' }
-            }
             steps {
-                sh 'mvn --version'
                 echo 'Hello World'
             }
         }
