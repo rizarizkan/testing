@@ -1,9 +1,7 @@
 def username = 'Jenkins'
 pipeline {
 agent {
-        docker { image 'node:16.13.1-alpine' }
-    }
-agent {
+    docker { image 'node:16.13.1-alpine' }
     kubernetes {
       label 'k8s'
       activeDeadlineSeconds 60
