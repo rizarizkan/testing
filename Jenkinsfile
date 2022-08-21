@@ -64,11 +64,7 @@ agent {
     
    stages {
         stage('Example') {
-            agent {
-              docker {
-               image 'python:3.7'
-    }
-}
+        }
             steps {
                 echo 'Hello World'
             }
