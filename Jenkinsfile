@@ -62,6 +62,11 @@ agent {
     
    stages {
         stage('Example') {
+            when {
+              expression {
+                currentBuild.result == 'UNSTABLE' || currentBuild.result == 'ABORTED' 
+              }
+            }
             steps {
                 echo 'Hello World'
             }
