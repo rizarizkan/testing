@@ -64,7 +64,7 @@ agent {
         stage('Example') {
             when {
               expression {
-                currentBuild.result == null || currentBuild.result == 'SUCCESS' 
+                currentBuild.result == 'UNSTABLE' || currentBuild.result == 'FAILURE' 
               }
             }
             steps {
