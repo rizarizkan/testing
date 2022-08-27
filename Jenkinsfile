@@ -1,14 +1,10 @@
 pipeline {
   agent {
     kubernetes {
-      yaml '''
-        kind: Pod
-        metadata:
-          labels:
-            testing-label: true
-        spec:
-        nodeSelector:
+      nodeSelector:
              kops.k8s.io/instancegroup: devtools
+      yaml '''
+        spec:    
           containers:
           - name: maven
             image: maven:alpine
