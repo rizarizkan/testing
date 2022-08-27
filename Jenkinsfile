@@ -1,8 +1,6 @@
 pipeline {
   agent {
     kubernetes {
-      nodeSelector:
-             kops.k8s.io/instancegroup: devtools
       yaml '''
         spec:    
           containers:
@@ -16,6 +14,8 @@ pipeline {
             command:
             - cat
             tty: true
+        nodeSelector:
+             kops.k8s.io/instancegroup: devtools
         '''
     }
   }
