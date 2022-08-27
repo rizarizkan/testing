@@ -25,14 +25,6 @@ pipeline {
     }
   
   stages {
-        stage('Example') {
-            steps {
-                echo "${params.Greeting} World!"
-            }
-        }
-    }
-  
-  stages {
     stage('Run maven') {
       steps {
         container('maven') {
