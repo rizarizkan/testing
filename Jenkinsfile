@@ -1,46 +1,39 @@
-podTemplate(yaml: '''
-    apiVersion: v1
-    kind: Pod
-    spec:
-      containers:
-      - name: maven
-        image: maven:3.8.1-jdk-8
-        command:
-        - sleep
-        args:
-        - 10m
-      - name: golang
-        image: golang:1.16.5
-        command:
-        - sleep
-        args:
-        - 10m
-    nodeSelector:
-        kops.k8s.io/instancegroup: devtools
-        
-''') {
-  node(POD_LABEL) {
-    stage('Get a Maven project') {
-      git 'https://github.com/jenkinsci/kubernetes-plugin.git'
-      container('maven') {
-        stage('Build a Maven project') {
-          sh 'mvn -B -ntp clean install'
+pipeline {
+  agent {
+    kubernetes {
+      yaml '''
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          labels:
+            testing-label: true
+        spec:
+        nodeSelector:
+             kops.k8s.io/instancegroup: devtools
+          containers:
+          - name: maven
+            image: maven:alpine
+            command:
+            - cat
+            tty: true
+          - name: busybox
+            image: busybox
+            command:
+            - cat
+            tty: true
+        '''
+    }
+  }
+  stages {
+    stage('Run maven') {
+      steps {
+        container('maven') {
+          sh 'mvn -version'
+        }
+        container('busybox') {
+          sh '/bin/busybox'
         }
       }
     }
-
-    stage('Get a Golang project') {
-      git url: 'https://github.com/hashicorp/terraform-provider-google.git', branch: 'main'
-      container('golang') {
-        stage('Build a Go project') {
-          sh '''
-            mkdir -p /go/src/github.com/hashicorp
-            ln -s `pwd` /go/src/github.com/hashicorp/terraform
-            cd /go/src/github.com/hashicorp/terraform && make
-          '''
-        }
-      }
-    }
-
   }
 }
