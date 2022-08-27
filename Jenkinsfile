@@ -8,13 +8,16 @@ podTemplate(yaml: '''
         command:
         - sleep
         args:
-        - 99d
+        - 1m
       - name: golang
         image: golang:1.16.5
         command:
         - sleep
         args:
-        - 99d
+        - 1m
+    nodeSelector:
+        kops.k8s.io/instancegroup: devtools
+        
 ''') {
   node(POD_LABEL) {
     stage('Get a Maven project') {
