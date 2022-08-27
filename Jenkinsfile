@@ -8,13 +8,13 @@ podTemplate(yaml: '''
         command:
         - sleep
         args:
-        - 1m
+        - 10m
       - name: golang
         image: golang:1.16.5
         command:
         - sleep
         args:
-        - 1m
+        - 10m
     nodeSelector:
         kops.k8s.io/instancegroup: devtools
         
