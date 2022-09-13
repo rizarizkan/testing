@@ -30,7 +30,7 @@ pipeline {
           sh '/bin/busybox'
 
 	script {
-        def port=echo $((port=$(awk '/patch/{print}' .semver | cut -d " " -f2) +1)) 
+        sh port=echo $((port=$(awk '/patch/{print}' .semver | cut -d " " -f2) +1))
         echo "${port}"
         }
 
