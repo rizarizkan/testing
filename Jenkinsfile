@@ -21,16 +21,17 @@ pipeline {
   }
   
   stages {
-    stage('Run maven') {
-      steps {
-        container('maven') {
-          sh 'mvn -version'
-        }
-        container('busybox') {
-          sh '/bin/busybox'
-
+    stage('user_input'){
+      input{
+          message "press ok to continue"
+          submitter "kalai,lead"
+      parameters{
+          string(name:'username1',description: "only kalai and lead has permission")
+       }
+      }
+        steps{
+        echo "User : ${username1} said ok"
         }
       }
     }
-  }
 }
