@@ -1,12 +1,13 @@
 {
-  "name": "simple-nodejs-server",
+  "name": "docker_web_app",
   "version": "1.0.0",
-  "description": "Simple Node.js Server",
-  "main": "index.js",
+  "description": "Node.js on Docker",
+  "author": "First Last <first.last@example.com>",
+  "main": "server.js",
   "scripts": {
-  	"start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
-  "author": "Aline Bastos",
-  "license": "ISC"
+  "dependencies": {
+    "express": "^4.16.1"
+  }
 }
