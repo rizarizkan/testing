@@ -40,6 +40,7 @@ pipeline {
   
   environment {
     GITHUB_COMMON_CREDS = credentials('github-itmi')
+    HARBOR_CREDENTIALS = credentials('harbor-registry')
 }
   
   stages {
@@ -54,6 +55,9 @@ pipeline {
       steps {
         container('node') {
           sh 'node -v'
+         }
+        container(name: 'docker') {
+          sh 'echo $HARBOR_CREDENTIALS_PSW | docker login -u $HARBOR_CREDENTIALS_USR https://registry.rizkan.xyz --password-stdin'
         }
         container(name: 'docker') {
             script {
