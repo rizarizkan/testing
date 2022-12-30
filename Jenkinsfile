@@ -47,7 +47,7 @@ pipeline {
       steps {
           checkout scm
           withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
-          git 'https://github.com/itmi-id/itmi-infra.git'
+          git 'https://github.com/rizarizkan/testing.git'
         }
       }
     }
