@@ -1,5 +1,4 @@
 ## Simple Node.js Server
-kok
 
 How to create a simple Node.js server:
 
