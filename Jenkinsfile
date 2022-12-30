@@ -51,7 +51,7 @@ pipeline {
         }
       }
     }
-    stage('Run maven') {
+    stage('Run node') {
       steps {
         container('node') {
           sh 'node -v'
