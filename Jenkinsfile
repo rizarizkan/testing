@@ -18,18 +18,8 @@ pipeline {
                path: /var/lib/bundle
                type: DirectoryOrCreate
           containers:
-          - name: maven
-            image: maven:alpine
-            command:
-            - cat
-            tty: true
-          - name: nginx
-            image: nginx:latest
-            command:
-            - cat
-            tty: true
-          - name: ruby
-            image: ruby:latest
+          - name: node
+            image: node:latest
             command:
               - cat
             tty: true
@@ -55,24 +45,21 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-            checkout scm
-        //withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
-        //git 'https://github.com/itmi-id/itmi-infra.git'
-        //}
+          checkout scm
+          withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
+          git 'https://github.com/itmi-id/itmi-infra.git'
+        }
       }
     }
     stage('Run maven') {
       steps {
-        container('maven') {
-          sh 'mvn -version'
-        }
-        container('nginx') {
-          sh 'nginx -v'
+        container('node') {
+          sh 'node -v'
         }
         container(name: 'docker') {
             script {
             dockerImage = docker.build "registry.rizkan.xyz/itmi-core" + ":staging"
-            //docker.withRegistry('https://registry.rizkan.xyz', 'docker-registry') {
+          //docker.withRegistry('https://registry.rizkan.xyz', 'docker-registry') {
             withDockerRegistry(registry: [url: 'https://registry.rizkan.xyz/', credentialsId: 'docker-registry']) {
             dockerImage.push()
                   }
