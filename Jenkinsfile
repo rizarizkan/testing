@@ -57,11 +57,9 @@ pipeline {
           sh 'node -v'
          }
         container(name: 'docker') {
-          sh 'echo $HARBOR_CREDENTIALS_PSW | docker login -u $HARBOR_CREDENTIALS_USR https://registry.rizkan.xyz --password-stdin'
-        }
-        container(name: 'docker') {
             script {
-            docker.withRegistry('https://registry.rizkan.xyz', 'harbor-registry') {
+            //docker.withRegistry('https://registry.rizkan.xyz', 'harbor-registry') {
+            docker.withRegistry('https://registry.rizkan.xyz') {
             //withDockerRegistry(registry: [url: 'https://registry.rizkan.xyz', credentialsId: 'harbor-registry']) {
             def customImage = docker.build("itmi-core:${env.BUILD_ID}")
             //dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":staging"
