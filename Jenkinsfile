@@ -57,7 +57,7 @@ pipeline {
         }
         container(name: 'docker') {
             script {
-            dockerImage = docker.build "registry.rizkan.xyz/itmi-core" + ":staging"
+            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":staging"
             withDockerRegistry(registry: [url: 'https://registry.rizkan.xyz/glm', credentialsId: 'docker-registry']) {
             dockerImage.push()
                   }
