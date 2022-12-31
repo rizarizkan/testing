@@ -86,7 +86,7 @@ pipeline {
     stage('curl') {
       steps{
         container(name: 'curl') {
-          sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
+          sh 'curl -s -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
           sh "chmod +x ./kubectl"  
           sh "./kubectl version"
         }
