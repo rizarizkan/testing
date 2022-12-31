@@ -55,7 +55,7 @@ pipeline {
       steps{
         container('docker') {
           script{
-            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core:0.1" + ":staging"
+            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":develop"
              }
            }  
          }
