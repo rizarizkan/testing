@@ -73,7 +73,9 @@ pipeline {
         }
     stage('Remove Unused docker image') {
       steps{
-        sh "docker rmi registry.rizkan.xyz/glm/itmi-core" + ":develop"
+        container(name: 'docker') {
+          sh "docker rmi registry.rizkan.xyz/glm/itmi-core" + ":develop"
+        }
       }
     }
   }
