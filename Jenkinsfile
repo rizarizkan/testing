@@ -55,7 +55,7 @@ pipeline {
       steps{
         container('docker') {
           script{
-            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":develop"
+            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":$BUILD_NUMBER"
              }
            }  
          }
@@ -74,8 +74,7 @@ pipeline {
     stage('Remove Unused docker image') {
       steps{
         container(name: 'docker') {
-          //sh "docker rmi registry.rizkan.xyz/glm/itmi-core" + ":develop"
-          sh "docker image prune registry.rizkan.xyz/glm/itmi-core"
+          sh "docker rmi registry.rizkan.xyz/glm/itmi-core" + ":$BUILD_NUMBER"
         }
       }
     }
