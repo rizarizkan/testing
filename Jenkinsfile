@@ -84,6 +84,7 @@ pipeline {
           sh "ls"
           sh "cat /etc/issue"
           sh "df -h"
+          sh "ls /home/jenkins/agent"
         }
       }
     }
