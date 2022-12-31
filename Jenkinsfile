@@ -45,30 +45,34 @@ pipeline {
   
   stages {
     stage('Cloning Git') {
-      steps {
+      steps{
           checkout scm
           withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
         }
       }
     }
-    stage('Run node') {
-      steps {
-        container('node') {
-          sh 'node -v'
+    stage('Build Image') {
+      steps{
+        container('docker') {
+          script{
+            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":staging"
+             }
+           }  
          }
+       }
+    stage('Deploy Image'){
+      steps{
         container(name: 'docker') {
-            script {
-            //docker.withRegistry('https://registry.rizkan.xyz', 'harbor-registry') {
-            //docker.withRegistry('https://registry.rizkan.xyz') {
+          script {
             withDockerRegistry(registry: [url: 'https://registry.rizkan.xyz', credentialsId: 'harbor-registry']) {
-            def customImage = docker.build("itmi-core:${env.BUILD_ID}")
-            //dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":staging"
-            dockerImage.push()
-                  }
+              dockerImage.push()
+              //def customImage = docker.build("itmi-core:${env.BUILD_ID}")
+              //dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":staging"
                 }
               }
-      }
-    }
+            }
+          }
+        }
   }
   
 
