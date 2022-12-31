@@ -34,14 +34,11 @@ pipeline {
             volumeMounts:
               - name: docker
                 mountPath: /var/run/docker.sock
-          - name: kubectl
-            image: bitnami/kubectl
+          - name: curl
+            image: pstauffer/curl
             command:
               - cat
             tty: true
-            volumeMounts:
-              - name: jenkins-slave
-                mountPath: /var/lib/bundle
         '''
     }
   }
@@ -86,15 +83,13 @@ pipeline {
           }
         }
       }
-    stage('default') {
+    stage('curl') {
       steps{
-          sh "ls"
-          sh "cat /etc/issue"
-          sh "which wget"
-          sh "wget"
+        container(name: 'curl') {
           sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
           sh "chmod +x ./kubectl"  
           sh "./kubectl version"
+        }
       }
     }
 
