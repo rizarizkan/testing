@@ -34,6 +34,14 @@ pipeline {
             volumeMounts:
               - name: docker
                 mountPath: /var/run/docker.sock
+          - name: kubectl
+            image: kubectl:latest
+            command:
+              - cat
+            tty: true
+            volumeMounts:
+              - name: jenkins-slave
+                mountPath: /var/lib/bundle
         '''
     }
   }
@@ -78,13 +86,13 @@ pipeline {
           }
         }
       }
-    stage('docker-container') {
+    stage('kubectl') {
       steps{
-        container(name: 'docker') {
+        container(name: 'kubectl') {
           sh "ls"
           sh "cat /etc/issue"
           sh "df -h"
-          sh "ls /home/jenkins/agent"
+          sh "kubectl --version"
         }
       }
     }
@@ -93,7 +101,6 @@ pipeline {
           sh "ls"
           sh "cat /etc/issue"
           sh "df -h"
-          sh "kubectl --version"
       }
     }
 
