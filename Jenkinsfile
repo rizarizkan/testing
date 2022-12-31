@@ -66,13 +66,11 @@ pipeline {
           script {
             withDockerRegistry(registry: [url: 'https://registry.rizkan.xyz', credentialsId: 'harbor-registry']) {
               dockerImage.push()
-              //def customImage = docker.build("itmi-core:${env.BUILD_ID}")
                 }
               }
             }
           }
         }
-  }
+      }
   
-
 }
