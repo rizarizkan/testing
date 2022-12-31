@@ -85,7 +85,6 @@ pipeline {
           sh "cat /etc/issue"
           sh "df -h"
           sh "ls /home/jenkins/agent"
-          sh "kubectl --version"
         }
       }
     }
