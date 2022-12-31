@@ -90,7 +90,7 @@ pipeline {
       steps{
           sh "ls"
           sh "cat /etc/issue"
-          sh "curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          sh "curl -LO 'https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl'"
           sh "chmod +x ./kubectl"  
           sh "./kubectl version"
       }
