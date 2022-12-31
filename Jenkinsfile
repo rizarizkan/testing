@@ -90,7 +90,8 @@ pipeline {
       steps{
           sh "ls"
           sh "cat /etc/issue"
-          sh "which curl"
+          sh "which wget"
+          sh "wget"
           sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
           sh "chmod +x ./kubectl"  
           sh "./kubectl version"
