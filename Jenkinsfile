@@ -86,21 +86,13 @@ pipeline {
           }
         }
       }
-    stage('kubectl') {
-      steps{
-        container(name: 'kubectl') {
-          sh "ls"
-          sh "cat /etc/issue"
-          sh "df -h"
-          sh "kubectl --version"
-        }
-      }
-    }
     stage('default') {
       steps{
           sh "ls"
           sh "cat /etc/issue"
-          sh "df -h"
+          sh "curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          sh "chmod +x ./kubectl"  
+          sh "./kubectl version"
       }
     }
 
