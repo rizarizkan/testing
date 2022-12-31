@@ -55,7 +55,7 @@ pipeline {
       steps{
         container('docker') {
           script{
-            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":$BUILD_NUMBER"
+            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":$JOB_NAME-$BUILD_NUMBER"
              }
            }  
          }
