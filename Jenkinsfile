@@ -55,7 +55,7 @@ pipeline {
       steps{
         container('docker') {
           script{
-            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":staging"
+            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core:0.1" + ":staging"
              }
            }  
          }
@@ -67,7 +67,6 @@ pipeline {
             withDockerRegistry(registry: [url: 'https://registry.rizkan.xyz', credentialsId: 'harbor-registry']) {
               dockerImage.push()
               //def customImage = docker.build("itmi-core:${env.BUILD_ID}")
-              //dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":staging"
                 }
               }
             }
