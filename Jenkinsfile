@@ -92,15 +92,6 @@ pipeline {
         }
       }
     }
-    stage('Deploy to Kubernetes') {
-      steps {
-        container('helm') {
-          git branch: main, credentialsId: 'github-itmi', url: 'https://github.com/rizarizkan/helm-k8s.git'
-          dir('itmi-core')
-          sh "helm upgrade --wait --timeout 15m0s --install core . -n default -f values.yml"
-        }
-      }
-    }
    stage('Get K8s Yaml files') {
      steps {
         echo 'Getting kubernetes files from git...'
