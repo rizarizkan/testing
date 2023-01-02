@@ -109,7 +109,7 @@ pipeline {
        }
    stage('Deploy to Kubernetes') {
      steps {
-        container(name: 'curl') {
+        container(name: 'helm') {
           sh "helm upgrade --wait --timeout 15m0s --install core . -n default -f values.yml"
         }
       }
