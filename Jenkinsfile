@@ -97,7 +97,7 @@ pipeline {
         container('helm') {
           git changelog: false, credentialsId: 'github-itmi', poll: false, url: 'https://github.com/rizarizkan/helm-k8s.git'
           dir('itmi-core')
-          sh "helm upgrade --wait --timeout 15m0s --install core . -n default -f values.yml
+          sh "helm upgrade --wait --timeout 15m0s --install core . -n default -f values.yml"
         }
       }
     }
