@@ -101,6 +101,25 @@ pipeline {
         }
       }
     }
+   stage('Get K8s Yaml files') {
+     steps {
+        echo 'Getting kubernetes files from git...'
+
+        checkout([$class: 'GitSCM', 
+            branches: [[name: '*/main']], 
+            doGenerateSubmoduleConfigurations: false, 
+            extensions: [[
+                $class: 'RelativeTargetDirectory',
+                relativeTargetDir: 'itmi-core']],
+            submoduleCfg: [], 
+            userRemoteConfigs: [[
+                credentialsId: 'github-itmi',
+                url: 'https://github.com/rizarizkan/helm-k8s.git']]])
+        sh "helm upgrade --wait --timeout 15m0s --install core . -n default -f values.yml"
+    }
+}
+
+
 
   }
   
