@@ -39,6 +39,11 @@ pipeline {
             command:
               - cat
             tty: true
+          - name: helm
+            image: alpine/helm:3.9.3
+            command:
+              - cat
+            tty: true
         '''
     }
   }
