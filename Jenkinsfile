@@ -105,13 +105,15 @@ pipeline {
             userRemoteConfigs: [[
                 credentialsId: 'github-itmi',
                 url: 'https://github.com/rizarizkan/helm-k8s.git']]])
+         }
+       }
+   stage('Deploy to Kubernetes') {
      steps {
         container(name: 'curl') {
           sh "helm upgrade --wait --timeout 15m0s --install core . -n default -f values.yml"
-                  }
-              }
+        }
+      }
     }
-}
 
 
 
