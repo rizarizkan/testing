@@ -127,7 +127,7 @@ pipeline {
         always {
           container(name: 'helm') {
           sh "pwd"
-          sh "ls /home/jenkins/agent/workspace/itmi_main/itmi-core"
+          sh "ls /home/jenkins/agent/workspace/itmi_main/itmi-core/"
           }
        }
     }
