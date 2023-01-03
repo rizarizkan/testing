@@ -118,7 +118,7 @@ pipeline {
             dir('itmi-core/itmi-core') {
             sh "pwd"
             sh "ls -lR"
-            sh "helm install core . -f values.yaml"
+            sh "helm install core . -f values.yaml --dry-run --debug"
            }
         }
       }
