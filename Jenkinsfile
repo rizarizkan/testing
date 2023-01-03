@@ -118,7 +118,7 @@ pipeline {
             dir('itmi-core/itmi-core') {
             sh "pwd"
             sh "ls -lR"
-            sh "helm install core . -f values.yaml --set metrics-server.enabled=true --dry-run --debug"
+            sh "helm install core . -f values.yaml --set metrics-server.enabled=false --dry-run --debug"
            }
         }
       }
