@@ -128,7 +128,7 @@ pipeline {
           container(name: 'helm') {
           sh "pwd"
           sh "cd /home/jenkins/agent/workspace/itmi_main/itmi-core/"
-          sh "ls"
+          sh "ls -lR"
           }
        }
     }
