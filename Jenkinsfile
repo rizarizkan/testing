@@ -112,26 +112,29 @@ pipeline {
                 url: 'https://github.com/rizarizkan/helm-k8s.git']]])
          }
        }
-//   stage('Deploy to Kubernetes') {
-//     steps {
-//        container(name: 'helm') {
+   stage('Deploy to Kubernetes') {
+     steps {
+        container(name: 'helm') {
+            dir('itmi-core') {
+            sh "helm list"
 //          sh "helm upgrade --wait --timeout 15m0s --install core . -n default -f values.yml"
-//        }
-//      }
-//    }
+           }
+        }
+      }
+    }
 
 
 
   }
-     post {
-        always {
-          container(name: 'helm') {
-            dir('itmi-core') {
-              sh "helm list"
+//     post {
+//        always {
+//          container(name: 'helm') {
+//            dir('itmi-core') {
+//              sh "helm list"
               //sh "helm upgrade --install core . -n default -f values.yml"
-             }
-          }
-       }
-    }
+//             }
+//          }
+//       }
+//    }
   
 }
