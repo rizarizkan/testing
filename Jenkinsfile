@@ -127,7 +127,8 @@ pipeline {
         always {
           container(name: 'helm') {
             dir('itmi-core') {
-              sh "helm upgrade --wait --timeout 15m0s --install core . -n default -f values.yml"
+              sh "helm list"
+              //sh "helm upgrade --install core . -n default -f values.yml"
              }
           }
        }
