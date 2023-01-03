@@ -126,9 +126,8 @@ pipeline {
      post {
         always {
           container(name: 'helm') {
-            archiveArtifacts artifacts: 'itmi-core', onlyIfSuccessful: true
           sh "pwd"
-          sh "ls"
+          sh "ls /home/jenkins/agent"
           }
        }
     }
