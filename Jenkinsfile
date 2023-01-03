@@ -111,7 +111,7 @@ pipeline {
                 credentialsId: 'github-itmi',
                 url: 'https://github.com/rizarizkan/helm-k8s.git']]])
          }
-       }
+//       }
      post {
         always {
           container(name: 'helm') {
