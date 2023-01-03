@@ -116,6 +116,8 @@ pipeline {
      steps {
         container(name: 'helm') {
             dir('/home/jenkins/agent/workspace/itmi_main/itmi-core/itmi-core') {
+            sh "pwd"
+            sh "ls -lR"
             sh "helm upgrade --wait --timeout 15m0s --install core . -f values.yml"
            }
         }
