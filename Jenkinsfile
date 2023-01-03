@@ -116,9 +116,7 @@ pipeline {
      steps {
         container(name: 'helm') {
             dir('itmi-core/itmi-core') {
-            sh "pwd"
-            sh "ls -lR"
-            sh "helm install core . -f values.yaml --set metrics-server.enabled=false --dry-run --debug"
+            sh "helm upgrade --install core . -f values.yaml -n default 
            }
         }
       }
