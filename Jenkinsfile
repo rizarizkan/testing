@@ -126,9 +126,9 @@ pipeline {
      post {
         always {
           container(name: 'helm') {
-          sh "pwd"
-          sh "cd /home/jenkins/agent/workspace/itmi_main/itmi-core/"
-          sh "ls -lR"
+            dir('itmi-core') {
+              sh "helm upgrade --wait --timeout 15m0s --install core . -n default -f values.yml"
+             }
           }
        }
     }
