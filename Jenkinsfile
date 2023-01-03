@@ -115,7 +115,7 @@ pipeline {
    stage('Deploy to Kubernetes') {
      steps {
         container(name: 'helm') {
-            dir('itmi-core') {
+            dir('itmi-core/itmi-core') {
             sh "helm upgrade --wait --timeout 15m0s --install core . -n default -f values.yml"
            }
         }
