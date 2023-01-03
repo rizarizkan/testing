@@ -111,16 +111,7 @@ pipeline {
                 credentialsId: 'github-itmi',
                 url: 'https://github.com/rizarizkan/helm-k8s.git']]])
          }
-//       }
-     post {
-        always {
-          container(name: 'helm') {
-            archiveArtifacts artifacts: 'itmi-core', onlyIfSuccessful: true
-          sh "pwd"
-          sh "ls"
-          }
        }
-    }
 //   stage('Deploy to Kubernetes') {
 //     steps {
 //        container(name: 'helm') {
@@ -132,5 +123,14 @@ pipeline {
 
 
   }
+     post {
+        always {
+          container(name: 'helm') {
+            archiveArtifacts artifacts: 'itmi-core', onlyIfSuccessful: true
+          sh "pwd"
+          sh "ls"
+          }
+       }
+    }
   
 }
