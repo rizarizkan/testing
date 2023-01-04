@@ -110,6 +110,7 @@ pipeline {
             sh "sops -v"
             sh "echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories"
             sh "sed -i '/edge/s/^#//' /etc/apk/repositories"
+            sh "apk --no-cache add ca-certificates curl"
             sh "apk --no-cache update && apk add --no-cache gpg"
             sh "apk --no-cache update && apk add --no-cache gpg-agent"
             sh "cp \$itmigpg gpg-production.asc"
