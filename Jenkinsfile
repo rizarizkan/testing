@@ -117,6 +117,7 @@ pipeline {
         container(name: 'helm') {
             withCredentials([file(credentialsId: 'gpg', variable: 'itmigpg')]) {
             sh "apk add --update gpg"
+            sh "apk add --update gpg-agent"
             sh "cp \$itmigpg gpg-production.asc"
             sh "gpg --import gpg-production.asc"
           }
