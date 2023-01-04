@@ -107,10 +107,9 @@ pipeline {
      steps {
         container(name: 'helm') {
             withCredentials([file(credentialsId: 'gpg', variable: 'itmigpg')]) {
-            sh "curl -s https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux --output sops"
-            sh "cp sops /usr/local/bin/"
+            sh "curl -O /usr/local/bin/sops -s https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux"
+         //   sh "cp sops /usr/local/bin/"
             sh "chmod +x /usr/local/bin/sops"
-            sh "sops -v"
             sh "echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories"
             sh "sed -i '/edge/s/^#//' /etc/apk/repositories"
             sh "apk --no-cache add ca-certificates curl"
@@ -125,8 +124,6 @@ pipeline {
      steps {
         container(name: 'helm') {
             dir('itmi-core/itmi-core') {
-            sh "pwd"
-            sh "ls -lR"
             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
           }
