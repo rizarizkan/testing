@@ -120,7 +120,7 @@ pipeline {
             sh "cp sops /usr/local/bin/"
             sh "sops -v"
             sh "cat /etc/issue"
-            sh "apt update -y && apt install gnupg -y"
+            sh "apk update && apk add gnupg"
             sh "gpg --version"
             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
            }
