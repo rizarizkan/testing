@@ -125,7 +125,7 @@ pipeline {
      steps {
         container(name: 'helm') {
             dir('itmi-core/itmi-core/') {
-             sh "helm secrets upgrade --wait --timeout 5m0s --install core . -f helm_vars/secrets.yaml" 
+             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
           }
         }
       }
