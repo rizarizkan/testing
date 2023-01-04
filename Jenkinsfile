@@ -125,6 +125,7 @@ pipeline {
             sh "apk update && apk add gnupg"
             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
                       }
+                   }
            }
         }
       }
