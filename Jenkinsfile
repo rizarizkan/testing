@@ -107,7 +107,8 @@ pipeline {
      steps {
         container(name: 'helm') {
             withCredentials([file(credentialsId: 'gpg', variable: 'itmigpg')]) {
-            //sh "echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories"
+            sh "sops -v"
+            sh "apk add librdkafka --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community"
             sh "apk --no-cache update && apk add --no-cache gpg"
             sh "apk --no-cache update && apk add --no-cache gpg-agent"
             sh "cp \$itmigpg gpg-production.asc"
