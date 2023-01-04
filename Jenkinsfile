@@ -117,7 +117,7 @@ pipeline {
              sh "cp \$itmigpg gpg-production.asc"
              sh "gpg --import gpg-production.asc"
              sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
-             sh "cd itmi-core/itmi-core && helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
+             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
           }
         }
       }
