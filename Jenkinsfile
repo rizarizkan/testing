@@ -108,7 +108,6 @@ pipeline {
         container(name: 'helm') {
             withCredentials([file(credentialsId: 'gpg', variable: 'itmigpg')]) {
             sh "curl -o /usr/local/bin/sops -s https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux"
-         //   sh "cp sops /usr/local/bin/"
             sh "chmod +x /usr/local/bin/sops"
             sh "echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories"
             sh "sed -i '/edge/s/^#//' /etc/apk/repositories"
@@ -116,20 +115,22 @@ pipeline {
             sh "apk add --no-cache gnupg"
             sh "cp \$itmigpg gpg-production.asc"
             sh "gpg --import gpg-production.asc"
-          }
-        }
-      }
-    }
-   stage('Deploy to Kubernetes') {
-     steps {
-        container(name: 'helm') {
-            dir('itmi-core/itmi-core') {
             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
-            sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
+            sh "cd itmi-core/itmi-core && helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
           }
         }
       }
     }
+//   stage('Deploy to Kubernetes') {
+//     steps {
+//        container(name: 'helm') {
+//            dir('itmi-core/itmi-core') {
+//            sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
+//            sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
+//          }
+//        }
+//      }
+//    }
 
 
 
