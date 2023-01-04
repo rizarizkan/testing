@@ -108,7 +108,8 @@ pipeline {
         container(name: 'helm') {
             withCredentials([file(credentialsId: 'gpg', variable: 'itmigpg')]) {
             sh "sops -v"
-            sh "apk add librdkafka --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community"
+            sh "echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories"
+            sh "sed -i '/edge/s/^#//' /etc/apk/repositories"
             sh "apk --no-cache update && apk add --no-cache gpg"
             sh "apk --no-cache update && apk add --no-cache gpg-agent"
             sh "cp \$itmigpg gpg-production.asc"
@@ -132,15 +133,5 @@ pipeline {
 
 
   }
-//     post {
-//        always {
-//          container(name: 'helm') {
-//            dir('itmi-core') {
-//              sh "helm list"
-              //sh "helm upgrade --install core . -n default -f values.yml"
-//             }
-//          }
-//       }
-//    }
   
 }
