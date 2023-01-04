@@ -130,7 +130,7 @@ pipeline {
              sh "gpg --list-keys"
              sh "gpg --fingerprint"
              sh "sops -v"
-             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
+             sh "helm secrets upgrade -wait --timeout 15m0s --install core . -f helm_vars/secrets.yaml" 
           }
         }
       }
