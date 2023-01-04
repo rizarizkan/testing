@@ -44,6 +44,11 @@ pipeline {
             command:
               - cat
             tty: true
+          - name: helm3
+            image: alpine/helm:3.9.3
+            command:
+              - cat
+            tty: true
         '''
     }
   }
@@ -120,7 +125,7 @@ pipeline {
     }
    stage('Deploy to Kubernetes') {
      steps {
-        container(name: 'helm') {
+        container(name: 'helm3') {
             dir('itmi-core/itmi-core') {
             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
             //sh "cp bin/sops /usr/local/bin/"
