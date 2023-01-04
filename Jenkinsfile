@@ -129,7 +129,7 @@ pipeline {
         container(name: 'helm') {
             dir('itmi-core/itmi-core') {
             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
-            sh "cp sops /usr/local/bin/"
+            sh "cp bin/sops /usr/local/bin/"
             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
           }
         }
