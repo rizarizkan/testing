@@ -117,7 +117,9 @@ pipeline {
         container(name: 'helm') {
             dir('itmi-core/itmi-core') {
             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
-            sh "export PATH=$PATH:/home/jenkins/agent/workspace/itmi_main/itmi-core/itmi-core/sops"
+            sh "cp sops /usr/local/bin/"
+            sh "chmod +x /usr/local/bin/""
+            #sh "export PATH=$PATH:/home/jenkins/agent/workspace/itmi_main/itmi-core/itmi-core/itmi-core/sops"
             sh "sops -v"
             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
            }
