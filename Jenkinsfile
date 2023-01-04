@@ -109,6 +109,7 @@ pipeline {
             withCredentials([file(credentialsId: 'gpg', variable: 'itmigpg')]) {
             sh "curl -s https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux --output sops"
             sh "cp sops /usr/local/bin/"
+            sh "chmod +x /usr/local/bin/sops"
             sh "sops -v"
             sh "echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories"
             sh "sed -i '/edge/s/^#//' /etc/apk/repositories"
