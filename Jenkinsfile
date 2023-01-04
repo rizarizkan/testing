@@ -125,6 +125,8 @@ pipeline {
      steps {
         container(name: 'helm') {
             dir('itmi-core/itmi-core') {
+            sh "pwd"
+            sh "ls -lR"
             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
           }
