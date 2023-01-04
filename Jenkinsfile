@@ -106,7 +106,7 @@ pipeline {
      steps {
         container(name: 'helm') {
             withCredentials([file(credentialsId: 'gpg', variable: 'itmigpg')]) {
-             sh "curl -o /usr/local/bin/sops -s https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux"
+             sh "curl -o /usr/local/bin/sops -s https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux.amd64"
              sh "chmod +x /usr/local/bin/sops"
              sh "echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories"
              sh "sed -i '/edge/s/^#//' /etc/apk/repositories"
