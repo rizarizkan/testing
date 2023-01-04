@@ -107,7 +107,7 @@ pipeline {
      steps {
         container(name: 'helm') {
             withCredentials([file(credentialsId: 'gpg', variable: 'itmigpg')]) {
-            sh "echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories"
+            sh "echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories"
             sh "apk update && apk add gpg"
             sh "apk update && apk add gpg-agent"
             sh "cp \$itmigpg gpg-production.asc"
