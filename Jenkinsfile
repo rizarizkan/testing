@@ -128,7 +128,7 @@ pipeline {
             dir('itmi-core/itmi-core') {
             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
             sh "cp sops /usr/local/bin/"
-            sh "apk update && apk add gnupg"
+            sh "apk add --update gpg"
             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
           }
         }
