@@ -40,7 +40,8 @@ pipeline {
               - cat
             tty: true
           - name: helm
-            image: alpine/helm:3.9.3
+            image: dtzar/helm-kubectl:3.9.3
+            imagePullPolicy: Always
             command:
               - cat
             tty: true
@@ -124,10 +125,7 @@ pipeline {
      steps {
         container(name: 'helm') {
             dir('itmi-core/itmi-core/') {
-             sh "curl -o sops  https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux.amd64"
-             sh "cp sops /usr/local/bin/"
-             sh "chmod +x /usr/local/bin/sops"
-             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
+             sh "helm secrets upgrade  --wait --timeout 1m0s --install core . -f helm_vars/secrets.yaml" 
           }
         }
       }
