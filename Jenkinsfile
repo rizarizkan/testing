@@ -114,7 +114,7 @@ pipeline {
              sh "apk add --no-cache gnupg"
              sh "cp \$itmigpg gpg-production.asc"
              sh "gpg --import gpg-production.asc"
-             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
+             //sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
         }
       }
     }
@@ -122,8 +122,8 @@ pipeline {
    stage('Deploy to Kubernetes') {
      steps {
         container(name: 'helm') {
-            dir('itmi-core/itmi-core/helm_vars') {
-             sh "helm secrets upgrade --install core . -f secrets.yaml" 
+            dir('itmi-core/itmi-core/') {
+             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
           }
         }
       }
