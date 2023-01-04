@@ -40,11 +40,6 @@ pipeline {
               - cat
             tty: true
           - name: helm
-            image: jobtomelabs/helm-sops
-            command:
-              - cat
-            tty: true
-          - name: helm3
             image: alpine/helm:3.9.3
             command:
               - cat
@@ -112,6 +107,7 @@ pipeline {
      steps {
         container(name: 'helm') {
             withCredentials([file(credentialsId: 'gpg', variable: 'itmigpg')]) {
+            sh "curl -O /usr/local/bin/sops https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux"
             sh "sops -v"
             sh "echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories"
             sh "sed -i '/edge/s/^#//' /etc/apk/repositories"
@@ -125,10 +121,9 @@ pipeline {
     }
    stage('Deploy to Kubernetes') {
      steps {
-        container(name: 'helm3') {
+        container(name: 'helm') {
             dir('itmi-core/itmi-core') {
             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
-            //sh "cp bin/sops /usr/local/bin/"
             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
           }
         }
