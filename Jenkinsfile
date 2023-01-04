@@ -112,20 +112,25 @@ pipeline {
                 url: 'https://github.com/rizarizkan/helm-k8s.git']]])
          }
        }
+   stage('gpg') {
+     steps {
+        container(name: 'helm') {
+            withCredentials([file(credentialsId: 'gpg', variable: 'itmigpg')]) {
+            sh "cp \$itmigpg gpg-production.asc"
+            sh "gpg --import gpg-production.asc"
+          }
+        }
+      }
+    }
    stage('Deploy to Kubernetes') {
      steps {
         container(name: 'helm') {
             dir('itmi-core/itmi-core') {
-            withCredentials([file(credentialsId: 'gpg', variable: 'itmigpg')]) {
-            sh "cp \$itmigpg gpg-production.asc"
-            sh "gpg --import gpg-production.asc"
             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
             sh "cp sops /usr/local/bin/"
             sh "apk update && apk add gnupg"
             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
-                      }
-                   
-           }
+          }
         }
       }
     }
