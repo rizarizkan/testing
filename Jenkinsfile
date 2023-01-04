@@ -119,6 +119,8 @@ pipeline {
             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
             sh "cp sops /usr/local/bin/"
             sh "sops -v"
+            sh "cat /etc/issue"
+            sh "apt update -y && apt install gnupg -y"
             sh "gpg --version"
             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
            }
