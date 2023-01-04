@@ -115,10 +115,10 @@ pipeline {
    stage('Deploy to Kubernetes') {
      steps {
         container(name: 'helm') {
+            dir('itmi-core/itmi-core') {
             withCredentials([file(credentialsId: 'gpg', variable: 'itmigpg')]) {
             sh "cp \$itmigpg gpg-production.asc"
             sh "gpg --import gpg-production.asc"
-            dir('itmi-core/itmi-core') {
             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
             sh "cp sops /usr/local/bin/"
             sh "apk update && apk add gnupg"
