@@ -112,7 +112,6 @@ pipeline {
             sh "sed -i '/edge/s/^#//' /etc/apk/repositories"
             sh "apk --no-cache add ca-certificates curl"
             sh "apk add --no-cache gnupg"
-            sh "apk add --no-cache gnupg-agent"
             sh "cp \$itmigpg gpg-production.asc"
             sh "gpg --import gpg-production.asc"
           }
