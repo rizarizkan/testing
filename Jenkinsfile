@@ -114,7 +114,7 @@ pipeline {
              sh "apk add --no-cache gnupg"
              sh "cp \$itmigpg gpg-production.asc"
              sh "gpg --import gpg-production.asc"
-             //sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
+             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
         }
       }
     }
