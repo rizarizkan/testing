@@ -110,7 +110,7 @@ pipeline {
              sh "cp sops /usr/local/bin/"
              sh "chmod +x /usr/local/bin/sops"
              sh "echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories"
-             //sh "sed -i '/edge/s/^#//' /etc/apk/repositories"
+             sh "sed -i '/edge/s/^#//' /etc/apk/repositories"
              sh "apk --no-cache add ca-certificates curl"
              sh "apk add --no-cache gnupg"
              sh "cp \$itmigpg gpg-production.asc"
@@ -124,6 +124,9 @@ pipeline {
      steps {
         container(name: 'helm') {
             dir('itmi-core/itmi-core/') {
+             sh "curl -o sops  https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux.amd64"
+             sh "cp sops /usr/local/bin/"
+             sh "chmod +x /usr/local/bin/sops"
              sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
           }
         }
