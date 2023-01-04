@@ -116,7 +116,7 @@ pipeline {
      steps {
         container(name: 'helm') {
             dir('itmi-core/itmi-core') {
-            sh "helm upgrade --install core . -f values.yaml -n default" 
+            sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
            }
         }
       }
