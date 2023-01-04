@@ -40,7 +40,7 @@ pipeline {
               - cat
             tty: true
           - name: helm
-            image: alpine/helm:3.9.3
+            image: jobtomelabs/helm-sops
             command:
               - cat
             tty: true
@@ -88,15 +88,6 @@ pipeline {
           }
         }
       }
-    stage('curl') {
-      steps{
-        container(name: 'curl') {
-          sh 'curl -s -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
-          sh "chmod +x ./kubectl"  
-          sh "./kubectl version"
-        }
-      }
-    }
    stage('Get K8s Yaml files') {
      steps {
         echo 'Getting kubernetes files from git...'
@@ -129,7 +120,7 @@ pipeline {
         container(name: 'helm') {
             dir('itmi-core/itmi-core') {
             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
-            sh "cp bin/sops /usr/local/bin/"
+            //sh "cp bin/sops /usr/local/bin/"
             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
           }
         }
