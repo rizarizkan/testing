@@ -52,6 +52,8 @@ pipeline {
   environment {
     GITHUB_COMMON_CREDS = credentials('github-itmi')
     HARBOR_CREDENTIALS = credentials('harbor-registry')
+    NAMESPACE = default
+    BRANCH = main
 }
   
   stages {
@@ -125,7 +127,7 @@ pipeline {
      steps {
         container(name: 'helm') {
             dir('itmi-core/itmi-core/') {
-             sh "helm secrets upgrade --install core . -f helm_vars/secrets.yaml" 
+             sh "helm secrets upgrade --install -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
           }
         }
       }
