@@ -92,7 +92,6 @@ pipeline {
           sh "docker image ls"
           sh "docker image ls registry.rizkan.xyz/glm/itmi-core"
           sh "docker rmi --force \$(docker images registry.rizkan.xyz/glm/itmi-core | grep '<none>' | awk '{print \$3}')"
-          sh "docker rmi --force \$(docker image ls | grep '<none>' | awk '{print \$3}')"
           sh "docker images registry.rizkan.xyz/glm/itmi-core"
           sh "docker image ls registry.rizkan.xyz/glm/itmi-core"
           }
@@ -112,6 +111,15 @@ pipeline {
                 url: 'https://github.com/rizarizkan/helm-k8s.git']]])
          }
        }
+    stage('Remove Unused docker image') {
+      steps{
+        container(name: 'docker') {
+          sh "docker rmi --force \$(docker images registry.rizkan.xyz/glm/itmi-core | grep '<none>' | awk '{print \$3}')"
+          sh "docker images registry.rizkan.xyz/glm/itmi-core"
+          sh "docker image ls registry.rizkan.xyz/glm/itmi-core"
+          }
+        }
+      }
    stage('gpg') {
      steps {
         container(name: 'helm') {
