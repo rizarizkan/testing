@@ -52,9 +52,9 @@ pipeline {
   environment {
     GITHUB_COMMON_CREDS = credentials('github-itmi')
     HARBOR_CREDENTIALS = credentials('harbor-registry')
-    NAMESPACE = 'devel'
-    BRANCH = 'devel'
-    IMAGE_TAG = 'devel'
+    NAMESPACE = 'default'
+    BRANCH = 'main'
+    IMAGE_TAG = 'main'
 }
   
   stages {
