@@ -111,7 +111,7 @@ pipeline {
                 url: 'https://github.com/rizarizkan/helm-k8s.git']]])
          }
        }
-    stage('Remove Unused docker image') {
+    stage('Remove2 Unused docker image') {
       steps{
         container(name: 'docker') {
           sh "docker rmi --force \$(docker images registry.rizkan.xyz/glm/itmi-core | grep '<none>' | awk '{print \$3}')"
