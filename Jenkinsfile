@@ -88,7 +88,8 @@ pipeline {
     stage('Remove Unused docker image') {
       steps{
         container(name: 'docker') {
-          sh "docker rmi registry.rizkan.xyz/glm/itmi-core" + ":${IMAGE_TAG}"
+          //sh "docker rmi registry.rizkan.xyz/glm/itmi-core" + ":${IMAGE_TAG}"
+          sh "docker rmi registry.rizkan.xyz/glm/itmi-core" + ": "
           }
         }
       }
