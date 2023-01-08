@@ -74,6 +74,17 @@ pipeline {
            }  
          }
        }
+    stage('Deploy Image'){
+      steps{
+        container(name: 'docker') {
+          script {
+            withDockerRegistry(registry: [url: 'https://registry.rizkan.xyz', credentialsId: 'harbor-registry']) {
+              dockerImage.push()
+                }
+              }
+            }
+          }
+        }
     stage('Remove Unused docker image') {
       steps{
         container(name: 'docker') {
@@ -86,17 +97,6 @@ pipeline {
           }
         }
       }
-    stage('Deploy Image'){
-      steps{
-        container(name: 'docker') {
-          script {
-            withDockerRegistry(registry: [url: 'https://registry.rizkan.xyz', credentialsId: 'harbor-registry']) {
-              dockerImage.push()
-                }
-              }
-            }
-          }
-        }
    stage('Get K8s Yaml files') {
      steps {
         checkout([$class: 'GitSCM', 
