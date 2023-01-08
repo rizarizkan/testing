@@ -68,7 +68,7 @@ pipeline {
       steps{
         container('docker') {
           script{
-            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":develop"
+            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":devel"
              }
            }  
          }
@@ -87,7 +87,7 @@ pipeline {
     stage('Remove Unused docker image') {
       steps{
         container(name: 'docker') {
-          sh "docker rmi registry.rizkan.xyz/glm/itmi-core" + ":develop"
+          sh "docker rmi registry.rizkan.xyz/glm/itmi-core" + ":devel"
           }
         }
       }
@@ -127,7 +127,7 @@ pipeline {
      steps {
         container(name: 'helm') {
             dir('itmi-core/itmi-core/') {
-             sh "helm secrets upgrade --install -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
+             sh "helm secrets upgrade --install --set image.tag=devel -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
           }
         }
       }
