@@ -74,17 +74,6 @@ pipeline {
            }  
          }
        }
-    stage('Deploy Image'){
-      steps{
-        container(name: 'docker') {
-          script {
-            withDockerRegistry(registry: [url: 'https://registry.rizkan.xyz', credentialsId: 'harbor-registry']) {
-              dockerImage.push()
-                }
-              }
-            }
-          }
-        }
     stage('Remove Unused docker image') {
       steps{
         container(name: 'docker') {
@@ -97,6 +86,17 @@ pipeline {
           }
         }
       }
+    stage('Deploy Image'){
+      steps{
+        container(name: 'docker') {
+          script {
+            withDockerRegistry(registry: [url: 'https://registry.rizkan.xyz', credentialsId: 'harbor-registry']) {
+              dockerImage.push()
+                }
+              }
+            }
+          }
+        }
    stage('Get K8s Yaml files') {
      steps {
         checkout([$class: 'GitSCM', 
@@ -111,15 +111,6 @@ pipeline {
                 url: 'https://github.com/rizarizkan/helm-k8s.git']]])
          }
        }
-    stage('Remove2 Unused docker image') {
-      steps{
-        container(name: 'docker') {
-          sh "docker rmi --force \$(docker images registry.rizkan.xyz/glm/itmi-core | grep '<none>' | awk '{print \$3}')"
-          sh "docker images registry.rizkan.xyz/glm/itmi-core"
-          sh "docker image ls registry.rizkan.xyz/glm/itmi-core"
-          }
-        }
-      }
    stage('gpg') {
      steps {
         container(name: 'helm') {
