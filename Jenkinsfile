@@ -94,6 +94,7 @@ pipeline {
           sh "docker rmi --force \$(docker images registry.rizkan.xyz/glm/itmi-core | grep '<none>' | awk '{print \$3}')"
           sh "docker images registry.rizkan.xyz/glm/itmi-core"
           sh "docker image ls registry.rizkan.xyz/glm/itmi-core"
+          sh "docker system prune --all"
           }
         }
       }
