@@ -90,7 +90,8 @@ pipeline {
         container(name: 'docker') {
           sh "docker rmi registry.rizkan.xyz/glm/itmi-core" + ":${IMAGE_TAG}"
           sh "docker image ls"
-          sh "docker image ls registry.rizkan.xyz/glm"
+          sh "docker image ls registry.rizkan.xyz/glm/itmi-core"
+          sh "docker images -a | grep "^<none>" | awk '{print $3}'"
           }
         }
       }
