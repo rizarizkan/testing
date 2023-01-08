@@ -54,6 +54,7 @@ pipeline {
     HARBOR_CREDENTIALS = credentials('harbor-registry')
     NAMESPACE = 'devel'
     BRANCH = 'devel'
+    IMAGE_TAG = 'devel'
 }
   
   stages {
@@ -68,7 +69,7 @@ pipeline {
       steps{
         container('docker') {
           script{
-            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":devel"
+            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":${IMAGE_TAG}"
              }
            }  
          }
@@ -87,7 +88,7 @@ pipeline {
     stage('Remove Unused docker image') {
       steps{
         container(name: 'docker') {
-          sh "docker rmi registry.rizkan.xyz/glm/itmi-core" + ":devel"
+          sh "docker rmi registry.rizkan.xyz/glm/itmi-core" + ":${IMAGE_TAG}"
           }
         }
       }
@@ -127,7 +128,7 @@ pipeline {
      steps {
         container(name: 'helm') {
             dir('itmi-core/itmi-core/') {
-             sh "helm secrets upgrade --install --set image.tag=devel -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
+             sh "helm secrets upgrade --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
           }
         }
       }
