@@ -55,6 +55,7 @@ pipeline {
     NAMESPACE = 'default'
     BRANCH = 'main'
     IMAGE_TAG = 'main'
+    RELEASE = 'core'
 }
   
   stages {
@@ -121,7 +122,9 @@ pipeline {
      steps {
         container(name: 'helm') {
             dir('itmi-core/itmi-core/') {
-             sh "helm secrets upgrade --recreate-pods --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
+             //sh "helm secrets upgrade --recreate-pods --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
+             sh "helm secrets upgrade --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
+             sh "kubectl rollout restart -n ${NAMESPACE} deployment ${RELEASE}"
           }
         }
       }
