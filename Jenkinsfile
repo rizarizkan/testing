@@ -126,6 +126,16 @@ pipeline {
         }
       }
     }
+   stage('kubectl') {
+     steps {
+        container(name: 'helm') {
+            dir('itmi-core/itmi-core/') {
+             sh "kubectl --version"
+             sh "kubectl get pods"
+          }
+        }
+      }
+    }
 
 
 
