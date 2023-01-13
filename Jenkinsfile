@@ -52,6 +52,8 @@ pipeline {
   environment {
     GITHUB_COMMON_CREDS = credentials('github-itmi')
     HARBOR_CREDENTIALS = credentials('harbor-registry')
+    HARBOR_URL = 'dev-registry.itmi.id'
+    HARBOR_PROJECT = 'dev-registry.itmi.id/library'
     NAMESPACE = 'devel'
     BRANCH = 'devel'
     IMAGE_TAG = 'devel'
@@ -70,7 +72,7 @@ pipeline {
       steps{
         container('docker') {
           script{
-            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":${IMAGE_TAG}"
+            dockerImage = docker.build "${HARBOR_PROJECT}/itmi-core" + ":${IMAGE_TAG}"
              }
            }  
          }
@@ -79,7 +81,7 @@ pipeline {
       steps{
         container(name: 'docker') {
           script {
-            withDockerRegistry(registry: [url: 'https://registry.rizkan.xyz', credentialsId: 'harbor-registry']) {
+            withDockerRegistry(registry: [url: '${HARBOR_URL}', credentialsId: 'harbor-registry']) {
               dockerImage.push()
                 }
               }
@@ -89,7 +91,7 @@ pipeline {
    stage('Get K8s Yaml files') {
      steps {
         checkout([$class: 'GitSCM', 
-            branches: [[name: '*/main']], 
+            branches: [[name: '*/master']], 
             doGenerateSubmoduleConfigurations: false, 
             extensions: [[
                 $class: 'RelativeTargetDirectory',
@@ -97,7 +99,7 @@ pipeline {
             submoduleCfg: [], 
             userRemoteConfigs: [[
                 credentialsId: 'github-itmi',
-                url: 'https://github.com/rizarizkan/helm-k8s.git']]])
+                url: 'https://github.com/itmi-id/itmi-infra.git']]])
          }
        }
    stage('gpg') {
@@ -121,7 +123,7 @@ pipeline {
    stage('Deploy to Kubernetes') {
      steps {
         container(name: 'helm') {
-            dir('itmi-core/itmi-core/') {
+            dir('itmi-infra/itmi-core/') {
              //sh "helm secrets upgrade --recreate-pods --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
              sh "helm secrets upgrade --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
              sh "kubectl rollout restart -n ${NAMESPACE} deployment ${RELEASE}"
