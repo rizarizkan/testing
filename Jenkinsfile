@@ -8,6 +8,10 @@ pipeline {
           labels:
             some-label: some-label-value
         spec:
+          tolerations:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
           volumes:
            - name: docker
              hostPath:
