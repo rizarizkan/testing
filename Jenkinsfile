@@ -9,10 +9,12 @@ pipeline {
             some-label: some-label-value
         spec:
           volumes:
-           - name: docker
-             hostPath:
-               path: /var/run/docker.sock
-               type: Socket
+          - name: kaniko-secret
+            secret:
+                secretName: dockercred
+                items:
+                - key: .dockerconfigjson
+                  path: config.json
            - name: jenkins-slave
              hostPath:
                path: /var/lib/bundle
@@ -27,14 +29,15 @@ pipeline {
               requests:
                 memory: 128Mi
                 cpu: 50m
-          - name: docker
-            image: docker:stable
+          - name: kaniko
+            image: gcr.io/kaniko-project/executor:debug
             command:
-              - cat
-            tty: true
+            - sleep
+            args:
+            - 9999999
             volumeMounts:
-            - name: docker
-              mountPath: /var/run/docker.sock
+            - name: kaniko-secret
+              mountPath: /kaniko/.docker
             resources:
               requests:
                 memory: 128Mi
@@ -81,26 +84,35 @@ pipeline {
         }
       }
     }
-    stage('Build Image') {
-      steps{
-        container('docker') {
-          script{
-            dockerImage = docker.build "${HARBOR_PROJECT}/itmi-core" + ":${IMAGE_TAG}"
-             }
-           }  
-         }
-       }
-    stage('Deploy Image'){
-      steps{
-        container(name: 'docker') {
-          script {
-            withDockerRegistry(registry: [url: '${HARBOR_URL}', credentialsId: 'harbor-registry']) {
-              dockerImage.push()
-                }
-              }
-            }
-          }
+    stage('Build Image with Kaniko') {
+      container('kaniko') {
+        stage('Build a project') {
+          sh '''
+            /kaniko/executor --context 'https://github.com/rizarizkan/testing.git' --destination ${HARBOR_PROJECT}/itmi-core:${IMAGE_TAG}
+          '''
         }
+      }
+    }
+//    stage('Build Image') {
+//      steps{
+//        container('docker') {
+//          script{
+//            dockerImage = docker.build "${HARBOR_PROJECT}/itmi-core" + ":${IMAGE_TAG}"
+//             }
+//           }  
+//         }
+//       }
+//    stage('Deploy Image'){
+//      steps{
+//        container(name: 'docker') {
+//          script {
+//            withDockerRegistry(registry: [url: '${HARBOR_URL}', credentialsId: 'harbor-registry']) {
+//              dockerImage.push()
+//                }
+//              }
+//            }
+//          }
+//        }
    stage('Get K8s Yaml files') {
      steps {
         checkout([$class: 'GitSCM', 
