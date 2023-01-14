@@ -88,36 +88,23 @@ pipeline {
       steps {
        container('kaniko') {
          script{
-         // sh "ls -lah"
-         //sh "pwd"
-         // sh "ls -lah /kaniko/"
-         // sh "cat /kaniko/.docker/config.json"
           sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination dev-registry.itmi.id/glm/itmi-core:${BUILD_NUMBER}"
           }
         }
       }
     }
-//    stage('Build Image') {
-//      steps{
-//        container('docker') {
-//          script{
-//            dockerImage = docker.build "${HARBOR_PROJECT}/itmi-core" + ":${IMAGE_TAG}"
-//             }
-//           }  
-//         }
-//       }
-//    stage('Deploy Image'){
-//      steps{
-//        container(name: 'docker') {
-//          script {
-//            withDockerRegistry(registry: [url: '${HARBOR_URL}', credentialsId: 'harbor-registry']) {
-//              dockerImage.push()
-//                }
-//              }
-//            }
-//          }
-//        }
-   stage('Get K8s Yaml files') {
+
+    stage('Git Clone imit-infra') {
+      git url: 'https://github.com/itmi-id/itmi-infra.git', branch: 'master'
+        stage('clone') {
+          sh '''
+          ls -lah
+          pwd
+          df -h
+          '''
+        }
+      }
+/*   stage('Get K8s Yaml files') {
      steps {
         checkout([$class: 'GitSCM', 
             branches: [[name: '*/master']], 
@@ -130,7 +117,7 @@ pipeline {
                 credentialsId: 'github-itmi',
                 url: 'https://github.com/itmi-id/itmi-infra.git']]])
          }
-       }
+       } */
    stage('gpg') {
      steps {
         container(name: 'helm') {
