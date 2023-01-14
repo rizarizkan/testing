@@ -25,6 +25,9 @@ pipeline {
                 cpu: 50m
           - name: docker
             image: docker:stable
+            command:
+              - cat
+            tty: true
             securityContext:
               privileged: true
               runAsUser: 0
