@@ -27,7 +27,7 @@ environment {
         stage('Get a Docker Project') {
             checkout scm
             withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
-            withDockerRegistry(registry: [url: '${HARBOR_URL}', credentialsId: 'harbor-registry']) {
+            withDockerRegistry(registry: [url: 'https://dev-registry.itmi.id', credentialsId: 'harbor-registry']) {
             container('docker') {
               dockerImage = docker.build "registry.rizkan.xyz/library/itmi-core" + ":${IMAGE_TAG}"
               dockerImage.push()
