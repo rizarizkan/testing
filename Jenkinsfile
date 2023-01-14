@@ -24,19 +24,8 @@ environment {
 }
 
     node(POD_LABEL) {
-        stage('Get a Maven project') {
-            git 'https://github.com/spring-projects/spring-petclinic.git'
-            container('maven') {
-                stage('Build a Maven project') {
-                    sh '''
-                    echo "maven build"
-                    '''
-                }
-            }
-        }
-
         stage('Get a Docker Project') {
-            git url: 'https://github.com/rizarizkan/testing.git', branch: 'main'
+            checkout scm
             withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
             container('docker') {
                 stage('Build a Docker project') {
