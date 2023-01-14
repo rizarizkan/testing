@@ -1,68 +1,18 @@
-pipeline {
-  agent {
-    kubernetes {
-      yaml '''
-        apiVersion: v1
-        kind: Pod
-        metadata:
-          labels:
-            some-label: some-label-value
-        spec:
-          volumes:
-           - name: docker
-             hostPath:
-               path: /var/run/crio/crio.sock
-               type: Socket
-           - name: jenkins-slave
-             hostPath:
-               path: /var/lib/bundle
-               type: DirectoryOrCreate
-          containers:
-          - name: node
-            image: node:latest
-            command:
-              - cat
-            tty: true
-            resources:
-              requests:
-                memory: 128Mi
-                cpu: 50m
-          - name: docker
-            image: docker:stable
-            command:
-              - cat
-            tty: true
-            volumeMounts:
-            - name: docker
-              mountPath: /var/run/crio/crio.sock
-            resources:
-              requests:
-                memory: 128Mi
-                cpu: 50m
-          - name: curl
-            image: pstauffer/curl
-            command:
-              - cat
-            tty: true
-            resources:
-              requests:
-                memory: 64Mi
-                cpu: 50m
-          - name: helm
-            image: dtzar/helm-kubectl:3.9.3
-            imagePullPolicy: Always
-            command:
-              - cat
-            tty: true
-            resources:
-              requests:
-                memory: 128Mi
-                cpu: 50m
-        '''
-    }
-  }
-  
-  environment {
+podTemplate(containers: [
+    containerTemplate(
+        name: 'maven', 
+        image: 'maven:3.8.1-jdk-8', 
+        command: 'sleep', 
+        args: '30d'
+        ),
+    containerTemplate(
+        name: 'docker', 
+        image: 'docker:stable', 
+        command: 'sleep', 
+        args: '30d')
+  ]) {
+
+environment {
     GITHUB_COMMON_CREDS = credentials('github-itmi')
     HARBOR_CREDENTIALS = credentials('harbor-registry')
     HARBOR_URL = 'dev-registry.itmi.id'
@@ -72,28 +22,29 @@ pipeline {
     IMAGE_TAG = 'devel'
     RELEASE = 'core'
 }
-  
-  stages {
-    stage('Cloning Git') {
-      steps{
-          checkout scm
-          withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
+
+    node(POD_LABEL) {
+        stage('Get a Maven project') {
+            git 'https://github.com/spring-projects/spring-petclinic.git'
+            container('maven') {
+                stage('Build a Maven project') {
+                    sh '''
+                    echo "maven build"
+                    '''
+                }
+            }
         }
-      }
-    }
-   stage('Build') {
-     node {
-       checkout scm
-       docker.withRegistry('${HARBOR_URL}', 'harbor-registry') {
-          def customImage = docker.build("my-image:${env.BUILD_ID}")
-          customImage.push()
-       }
+
+        stage('Get a Docker Project') {
+            git url: 'https://github.com/rizarizkan/testing.git', branch: 'main'
+            withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
+            container('docker') {
+                stage('Build a Docker project') {
+                dockerImage = docker.build "registry.rizkan.xyz/library/itmi-core" + ":${IMAGE_TAG}"
+                }
+            }
+          }
+        }
+
     }
 }
-
-}
-
-
-
-  }
-  
