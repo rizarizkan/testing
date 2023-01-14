@@ -128,14 +128,14 @@ pipeline {
    stage('Deploy to Kubernetes') {
      steps {
         container(name: 'helm') {
-           dir('itmi-infra-repository/helm/itmi-core') {
+           //dir('itmi-infra-repository/helm/itmi-core') {
            sh "df -h"
            sh "pwd"
            sh "ls -lah"
-           //sh "ls -lah itmi-infra-repositry/helm/itmi-core"
+           sh "ls -lah itmi-infra-repositry/helm/itmi-core"
            sh "helm secrets upgrade --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
            sh "kubectl rollout restart -n ${NAMESPACE} deployment ${RELEASE}"
-          }
+         // }
         }
       }
     }
