@@ -92,7 +92,7 @@ pipeline {
           sh "pwd"
           sh "ls -lah /kaniko/"
           sh "cat /kaniko/.docker/config.json"
-          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination ${HARBOR_URL}/glm/itmi-core:${BUILD_NUMBER}"
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination harbor-registry.default.svc.cluster.local:5000/glm/itmi-core:${BUILD_NUMBER}"
           }
         }
       }
