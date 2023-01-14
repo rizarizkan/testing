@@ -91,7 +91,8 @@ pipeline {
           sh "ls -lah"
           sh "pwd"
           sh "ls -lah /kaniko/"
-          sh "/kaniko/executor --dockerfile Dockerfile --context 'pwd' --destination ${HARBOR_PROJECT}/itmi-core:${BUILD_NUMBER}"
+          sh "cat /kaniko/.docker"
+          sh "/kaniko/executor --dockerfile Dockerfile --context 'https://github.com/rizarizkan/testing.git' --destination ${HARBOR_PROJECT}/itmi-core:${BUILD_NUMBER}"
           }
         }
       }
