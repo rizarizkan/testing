@@ -11,7 +11,7 @@ pipeline {
           volumes:
            - name: docker
              hostPath:
-               path: /run/containerd/containerd.sock
+               path: /var/run/docker.sock
                type: Socket
            - name: jenkins-slave
              hostPath:
@@ -28,13 +28,13 @@ pipeline {
                 memory: 128Mi
                 cpu: 50m
           - name: docker
-            image: docker/containerd-shim-process:edfb81e
+            image: docker:stable
             command:
               - cat
             tty: true
             volumeMounts:
             - name: docker
-              mountPath: /run/containerd/containerd.sock
+              mountPath: /var/run/docker.sock
             resources:
               requests:
                 memory: 128Mi
