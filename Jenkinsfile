@@ -97,7 +97,7 @@ pipeline {
       steps {
         script {   
           sh '''
-          git url: 'https://github.com/itmi-id/itmi-infra.git', branch: 'master'
+          git clone -b master https://github.com/itmi-id/itmi-infra.git
           ls -lah
           pwd
           df -h
