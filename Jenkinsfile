@@ -87,6 +87,7 @@ pipeline {
           sh "pwd"
           sh "ls -lah"
           sh "df -h"
+          sh "ls -lah /var/run/"
           script{
             dockerImage = docker.build "${HARBOR_PROJECT}/itmi-core" + ":${IMAGE_TAG}"
              }
