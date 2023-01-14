@@ -69,7 +69,7 @@ pipeline {
     GITHUB_COMMON_CREDS = credentials('github-itmi')
     HARBOR_CREDENTIALS = credentials('harbor-registry')
     HARBOR_URL = 'https://dev-registry.itmi.id'
-    HARBOR_PROJECT = 'https://dev-registry.itmi.id/library'
+    HARBOR_PROJECT = 'dev-registry.itmi.id/glm'
     NAMESPACE = 'devel'
     BRANCH = 'devel'
     IMAGE_TAG = 'devel'
