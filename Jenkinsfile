@@ -81,8 +81,8 @@ pipeline {
         }
       }
     }
-  node {
-    stage('Build') {
+   stage('Build') {
+     node {
        checkout scm
        docker.withRegistry('${HARBOR_URL}', 'harbor-registry') {
           def customImage = docker.build("my-image:${env.BUILD_ID}")
