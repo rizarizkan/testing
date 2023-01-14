@@ -132,6 +132,7 @@ pipeline {
              sh "df -h"
              sh "pwd"
              sh "ls -lah"
+             sh "ls -lah itmi-infra-repositry/"
              sh "helm secrets upgrade --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
              sh "kubectl rollout restart -n ${NAMESPACE} deployment ${RELEASE}"
           //}
