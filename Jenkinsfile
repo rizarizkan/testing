@@ -85,11 +85,13 @@ pipeline {
       }
     }
     stage('Build Image with Kaniko') {
-      container('kaniko') {
-        stage('Build a project') {
+      steps {
+       container('kaniko') {
+         script{
           sh '''
             /kaniko/executor --context 'https://github.com/rizarizkan/testing.git' --destination ${HARBOR_PROJECT}/itmi-core:${IMAGE_TAG}
           '''
+          }
         }
       }
     }
