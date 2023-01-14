@@ -9,10 +9,6 @@ pipeline {
             some-label: some-label-value
         spec:
           volumes:
-           //- name: docker
-           //  hostPath:
-           //    path: /var/run/docker.sock
-           //    type: Socket
            - name: jenkins-slave
              hostPath:
                path: /var/lib/bundle
@@ -35,9 +31,6 @@ pipeline {
             securityContext:
               privileged: true
               runAsUser: 0
-            //volumeMounts:
-            //- name: docker
-            //  mountPath: /var/run/docker.sock
             resources:
               requests:
                 memory: 128Mi
