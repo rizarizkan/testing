@@ -91,7 +91,7 @@ pipeline {
           sh "ls -lah"
           sh "pwd"
           sh "ls -lah /kaniko/"
-          sh "ls /kaniko/.docker"
+          sh "cat /kaniko/.docker/config.json"
           sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination ${HARBOR_PROJECT}/itmi-core:${BUILD_NUMBER}"
           }
         }
