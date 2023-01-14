@@ -67,13 +67,16 @@ pipeline {
 }
   
   node {
-    checkout scm
-    withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
-    docker.withRegistry('${HARBOR_URL}', 'harbor-registry') {
-        def customImage = docker.build("my-image:${env.BUILD_ID}")
-        customImage.push()
+    stage('Build') {
+       checkout scm
+       withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
+       docker.withRegistry('${HARBOR_URL}', 'harbor-registry') {
+          def customImage = docker.build("my-image:${env.BUILD_ID}")
+          customImage.push()
        }
     }
+}
+
 }
 
 
