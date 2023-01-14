@@ -11,7 +11,7 @@ pipeline {
           volumes:
            - name: docker
              hostPath:
-               path: /var/run/docker.sock
+               path: /var/run/crio/crio.sock
                type: Socket
            - name: jenkins-slave
              hostPath:
@@ -34,7 +34,7 @@ pipeline {
             tty: true
             volumeMounts:
             - name: docker
-              mountPath: /var/run/docker.sock
+              mountPath: /var/run/crio/crio.sock
             resources:
               requests:
                 memory: 128Mi
