@@ -10,13 +10,13 @@ pipeline {
         spec:
           volumes:
            - name: docker
-             hostPath:
-               path: /var/run/docker.sock
-               type: Socket
+             //hostPath:
+             //  path: /var/run/docker.sock
+             //  type: Socket
            - name: jenkins-slave
-             hostPath:
-               path: /var/lib/bundle
-               type: DirectoryOrCreate
+             //hostPath:
+             //  path: /var/lib/bundle
+             //  type: DirectoryOrCreate
           containers:
           - name: node
             image: node:latest
