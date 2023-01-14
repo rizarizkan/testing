@@ -93,10 +93,9 @@ pipeline {
         }
       }
     }
-
     stage('Git Clone imit-infra') {
-        stage('clone') {
-          steps {
+      steps {
+        script {   
           sh '''
           git url: 'https://github.com/itmi-id/itmi-infra.git', branch: 'master'
           ls -lah
