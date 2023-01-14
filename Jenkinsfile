@@ -154,7 +154,8 @@ pipeline {
         container(name: 'helm') {
             dir('itmi-infra/itmi-core/') {
              //sh "helm secrets upgrade --recreate-pods --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
-             sh "echo deploy"
+             sh "pwd"
+             sh "ls -lah"
              sh "helm secrets upgrade --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
              sh "kubectl rollout restart -n ${NAMESPACE} deployment ${RELEASE}"
           }
