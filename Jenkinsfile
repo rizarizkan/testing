@@ -88,38 +88,25 @@ pipeline {
       steps {
        container('kaniko') {
          script{
-          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination dev-registry.itmi.id/glm/itmi-core:${BUILD_NUMBER}"
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination ${HARBOR_PROJECT}/itmi-core:${BUILD_NUMBER}"
           }
         }
       }
     }
-    stage('Git Clone imit-infra') {
-      steps {
-        script {   
-          sh '''
-          git clone -b master https://github.com/itmi-id/itmi-infra.git
-          ls -lah
-          pwd
-          df -h
-          '''
-          }
-        }
-      }
-//   stage('Get K8s Yaml files') {
-//     steps {
-//        checkout([$class: 'GitSCM', 
-//            branches: [[name: '*/master']], 
-//            doGenerateSubmoduleConfigurations: false, 
-//            extensions: [[
-//                $class: 'RelativeTargetDirectory',
-//                relativeTargetDir: 'itmi-core']],
-//            submoduleCfg: [], 
-//            userRemoteConfigs: [[
-//                credentialsId: 'github-itmi',
-//                url: 'https://github.com/itmi-id/itmi-infra.git']]])
-//         }
-//       } */
-
+   stage('Get K8s Yaml files') {
+     steps {
+        checkout([$class: 'GitSCM', 
+            branches: [[name: '*/master']], 
+            doGenerateSubmoduleConfigurations: false, 
+            extensions: [[
+                $class: 'RelativeTargetDirectory',
+                relativeTargetDir: 'itmi-infra-repositry']],
+            submoduleCfg: [], 
+            userRemoteConfigs: [[
+                credentialsId: 'github-itmi',
+                url: 'https://github.com/itmi-id/itmi-infra.git']]])
+         }
+       } 
    stage('gpg') {
      steps {
         container(name: 'helm') {
@@ -141,8 +128,7 @@ pipeline {
    stage('Deploy to Kubernetes') {
      steps {
         container(name: 'helm') {
-             dir('itmi-core/helm/itmi-core') {
-             //sh "helm secrets upgrade --recreate-pods --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
+             dir('itmi-infra-repository/helm/itmi-core') {
              sh "df -h"
              sh "pwd"
              sh "ls -lah"
