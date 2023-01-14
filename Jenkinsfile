@@ -11,7 +11,7 @@ pipeline {
           volumes:
            - name: docker
              hostPath:
-               path: /csi/csi.sock
+               path: /run/containerd/containerd.sock
                type: Socket
            - name: jenkins-slave
              hostPath:
