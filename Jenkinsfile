@@ -92,7 +92,7 @@ pipeline {
          //sh "pwd"
          // sh "ls -lah /kaniko/"
          // sh "cat /kaniko/.docker/config.json"
-          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination https://dev-registry.itmi.id/glm/itmi-core:${BUILD_NUMBER}"
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination dev-registry.itmi.id/glm/itmi-core:${BUILD_NUMBER}"
           }
         }
       }
