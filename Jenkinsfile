@@ -95,13 +95,15 @@ pipeline {
     }
 
     stage('Git Clone imit-infra') {
-      git url: 'https://github.com/itmi-id/itmi-infra.git', branch: 'master'
         stage('clone') {
+          steps {
           sh '''
+          git url: 'https://github.com/itmi-id/itmi-infra.git', branch: 'master'
           ls -lah
           pwd
           df -h
           '''
+          }
         }
       }
 //   stage('Get K8s Yaml files') {
@@ -118,6 +120,7 @@ pipeline {
 //                url: 'https://github.com/itmi-id/itmi-infra.git']]])
 //         }
 //       } */
+
    stage('gpg') {
      steps {
         container(name: 'helm') {
