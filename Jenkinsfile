@@ -84,8 +84,7 @@ pipeline {
     stage('Build Image') {
       steps{
         container('docker') {
-          sh "pwd"
-          sh "ls -lah"
+          sh "cat /etc/issue"
           sh "df -h"
           sh "ls -lah /var/run/"
           script{
