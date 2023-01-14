@@ -11,7 +11,7 @@ pipeline {
           volumes:
            - name: docker
              hostPath:
-               path: /var/run/docker/docker.sock
+               path: /run/containerd/containerd.sock
                type: Socket
            - name: jenkins-slave
              hostPath:
@@ -32,9 +32,9 @@ pipeline {
             command:
               - cat
             tty: true
-            //volumeMounts:
-            //- name: docker
-            //  mountPath: /var/run/docker/docker.sock
+            volumeMounts:
+            - name: docker
+              mountPath: /run/containerd/containerd.sock
             resources:
               requests:
                 memory: 128Mi
@@ -84,9 +84,6 @@ pipeline {
     stage('Build Image') {
       steps{
         container('docker') {
-          sh "cat /etc/issue"
-          sh "df -h"
-          sh "ls -lah /var/run/"
           script{
             dockerImage = docker.build "${HARBOR_PROJECT}/itmi-core" + ":${IMAGE_TAG}"
              }
