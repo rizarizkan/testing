@@ -89,7 +89,7 @@ pipeline {
        container('kaniko') {
          script{
           sh '''
-            /kaniko/executor --context 'https://github.com/rizarizkan/testing.git' --destination ${HARBOR_PROJECT}/itmi-core:
+            /kaniko/executor --context 'https://github.com/rizarizkan/testing.git' --destination ${HARBOR_PROJECT}/itmi-core:1.0
           '''
           }
         }
