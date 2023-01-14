@@ -92,7 +92,7 @@ pipeline {
           sh "pwd"
           sh "ls -lah /kaniko/"
           sh "cat /kaniko/.docker/config.json"
-          sh "/kaniko/executor --insecure --skip-tls-verify --skip-tls-verify-pull --insecure-pull --dockerfile `pwd`/Dockerfile --context `pwd` --destination httpp://harbor-external.default/glm/itmi-core:${BUILD_NUMBER}"
+          sh "/kaniko/executor --insecure --skip-tls-verify --skip-tls-verify-pull --insecure-pull --dockerfile `pwd`/Dockerfile --context `pwd` --destination http://harbor-external.default/glm/itmi-core:${BUILD_NUMBER}"
           }
         }
       }
