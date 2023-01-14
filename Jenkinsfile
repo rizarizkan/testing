@@ -15,7 +15,7 @@ podTemplate(containers: [
 environment {
     GITHUB_COMMON_CREDS = credentials('github-itmi')
     HARBOR_CREDENTIALS = credentials('harbor-registry')
-    HARBOR_URL = 'dev-registry.itmi.id'
+    HARBOR_URL = 'https://dev-registry.itmi.id'
     HARBOR_PROJECT = 'dev-registry.itmi.id/library'
     NAMESPACE = 'devel'
     BRANCH = 'devel'
