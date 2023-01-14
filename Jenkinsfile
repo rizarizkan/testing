@@ -92,7 +92,7 @@ pipeline {
           sh "pwd"
           sh "ls -lah /kaniko/"
           sh "ls /kaniko/.docker"
-          sh "/kaniko/executor --dockerfile Dockerfile --context `pwd` --destination ${HARBOR_PROJECT}/itmi-core:${BUILD_NUMBER}"
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination ${HARBOR_PROJECT}/itmi-core:${BUILD_NUMBER}"
           }
         }
       }
