@@ -9,6 +9,10 @@ pipeline {
             some-label: some-label-value
         spec:
           volumes:
+           - name: docker
+             hostPath:
+               path: /var/run/crio/crio.sock
+               type: Socket
            - name: jenkins-slave
              hostPath:
                path: /var/lib/bundle
@@ -28,6 +32,9 @@ pipeline {
             command:
               - cat
             tty: true
+            volumeMounts:
+            - name: docker
+              mountPath: /var/run/crio/crio.sock
             resources:
               requests:
                 memory: 128Mi
@@ -66,10 +73,17 @@ pipeline {
     RELEASE = 'core'
 }
   
+  stages {
+    stage('Cloning Git') {
+      steps{
+          checkout scm
+          withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
+        }
+      }
+    }
   node {
     stage('Build') {
        checkout scm
-       withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
        docker.withRegistry('${HARBOR_URL}', 'harbor-registry') {
           def customImage = docker.build("my-image:${env.BUILD_ID}")
           customImage.push()
@@ -77,7 +91,9 @@ pipeline {
     }
 }
 
-}
+
 
 
   }
+  
+}
