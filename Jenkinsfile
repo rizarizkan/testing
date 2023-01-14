@@ -9,8 +9,8 @@ pipeline {
             some-label: some-label-value
         spec:
           volumes:
-          - name: kaniko-secret
-            secret:
+           - name: kaniko-secret
+             secret:
                 secretName: dockercred
                 items:
                 - key: .dockerconfigjson
