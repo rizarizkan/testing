@@ -66,87 +66,15 @@ pipeline {
     RELEASE = 'core'
 }
   
-  stages {
-    stage('Cloning Git') {
-      steps{
-          checkout scm
-          withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
-        }
-      }
-    }
-node {
+  node {
     checkout scm
+          withCredentials(bindings: [usernamePassword(credentialsId: 'github-itmi', passwordVariable: 'GITHUB_COMMON_CREDS_USR', usernameVariable: 'GITHUB_COMMON_CREDS_PSW')]) {
     docker.withRegistry('${HARBOR_URL}', 'harbor-registry') {
         def customImage = docker.build("my-image:${env.BUILD_ID}")
         customImage.push()
+       }
     }
 }
-//    stage('Build Image') {
-//      steps{
-//        container('docker') {
-//          script{
-//            dockerImage = docker.build "${HARBOR_PROJECT}/itmi-core" + ":${IMAGE_TAG}"
-//             }
-//           }  
-//         }
-//       }
-    stage('Deploy Image'){
-      steps{
-        container(name: 'docker') {
-          script {
-            withDockerRegistry(registry: [url: '${HARBOR_URL}', credentialsId: 'harbor-registry']) {
-              dockerImage.push()
-                }
-              }
-            }
-          }
-        }
-   stage('Get K8s Yaml files') {
-     steps {
-        checkout([$class: 'GitSCM', 
-            branches: [[name: '*/master']], 
-            doGenerateSubmoduleConfigurations: false, 
-            extensions: [[
-                $class: 'RelativeTargetDirectory',
-                relativeTargetDir: 'itmi-core']],
-            submoduleCfg: [], 
-            userRemoteConfigs: [[
-                credentialsId: 'github-itmi',
-                url: 'https://github.com/itmi-id/itmi-infra.git']]])
-         }
-       }
-   stage('gpg') {
-     steps {
-        container(name: 'helm') {
-            withCredentials([file(credentialsId: 'gpg', variable: 'itmigpg')]) {
-             sh "wget https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux.amd64"
-             sh "cp sops-v3.7.3.linux.amd64 /usr/local/bin/sops"
-             sh "chmod +x /usr/local/bin/sops"
-             sh "echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories"
-             sh "sed -i '/edge/s/^#//' /etc/apk/repositories"
-             sh "apk --no-cache add ca-certificates curl"
-             sh "apk add --no-cache gnupg"
-             sh "cp \$itmigpg gpg-production.asc"
-             sh "gpg --import gpg-production.asc"
-             sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
-        }
-      }
-    }
-  }
-   stage('Deploy to Kubernetes') {
-     steps {
-        container(name: 'helm') {
-            dir('itmi-infra/itmi-core/') {
-             //sh "helm secrets upgrade --recreate-pods --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
-             sh "echo deploy"
-             sh "helm secrets upgrade --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
-             sh "kubectl rollout restart -n ${NAMESPACE} deployment ${RELEASE}"
-          }
-        }
-      }
-    }
-
-
 
   }
   
