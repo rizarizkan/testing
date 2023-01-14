@@ -26,6 +26,10 @@ pipeline {
             volumeMounts:
               - name: jenkins-slave
                 mountPath: /var/lib/bundle
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 50m
           - name: docker
             image: docker:stable
             command:
@@ -34,17 +38,29 @@ pipeline {
             volumeMounts:
               - name: docker
                 mountPath: /var/run/docker.sock
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 50m
           - name: curl
             image: pstauffer/curl
             command:
               - cat
             tty: true
+            resources:
+              requests:
+                memory: 64Mi
+                cpu: 50m
           - name: helm
             image: dtzar/helm-kubectl:3.9.3
             imagePullPolicy: Always
             command:
               - cat
             tty: true
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 50m
         '''
     }
   }
