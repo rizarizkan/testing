@@ -92,7 +92,7 @@ pipeline {
           sh "pwd"
           sh "ls -lah /kaniko/"
           sh "cat /kaniko/.docker/config.json"
-          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination harbor-registry.default.svc.cluster.local:5000/glm/itmi-core:${BUILD_NUMBER}"
+          sh "/kaniko/executor --insecure --skip-tls-verify --skip-tls-verify-pull --insecure-pull --dockerfile `pwd`/Dockerfile --context `pwd` --destination harbor-registry.default.svc.cluster.local/glm/itmi-core:${BUILD_NUMBER}"
           }
         }
       }
