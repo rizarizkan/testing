@@ -88,9 +88,10 @@ pipeline {
       steps {
        container('kaniko') {
          script{
-          sh '''
-            /kaniko/executor --context 'https://github.com/rizarizkan/testing.git' --destination ${HARBOR_PROJECT}/itmi-core:1.0
-          '''
+          sh "ls -lah"
+          sh "pwd"
+          sh "ls -lah /kaniko/"
+          sh "/kaniko/executor --context 'https://github.com/rizarizkan/testing.git' --destination ${HARBOR_PROJECT}/itmi-core:1.0"
           }
         }
       }
