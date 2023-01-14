@@ -104,20 +104,20 @@ pipeline {
           '''
         }
       }
-/*   stage('Get K8s Yaml files') {
-     steps {
-        checkout([$class: 'GitSCM', 
-            branches: [[name: '*/master']], 
-            doGenerateSubmoduleConfigurations: false, 
-            extensions: [[
-                $class: 'RelativeTargetDirectory',
-                relativeTargetDir: 'itmi-core']],
-            submoduleCfg: [], 
-            userRemoteConfigs: [[
-                credentialsId: 'github-itmi',
-                url: 'https://github.com/itmi-id/itmi-infra.git']]])
-         }
-       } */
+//   stage('Get K8s Yaml files') {
+//     steps {
+//        checkout([$class: 'GitSCM', 
+//            branches: [[name: '*/master']], 
+//            doGenerateSubmoduleConfigurations: false, 
+//            extensions: [[
+//                $class: 'RelativeTargetDirectory',
+//                relativeTargetDir: 'itmi-core']],
+//            submoduleCfg: [], 
+//            userRemoteConfigs: [[
+//                credentialsId: 'github-itmi',
+//                url: 'https://github.com/itmi-id/itmi-infra.git']]])
+//         }
+//       } */
    stage('gpg') {
      steps {
         container(name: 'helm') {
