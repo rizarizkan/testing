@@ -74,7 +74,6 @@ pipeline {
         customImage.push()
        }
     }
-}
 
   }
   
