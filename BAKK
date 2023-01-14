@@ -9,6 +9,10 @@ pipeline {
             some-label: some-label-value
         spec:
           volumes:
+           - name: docker
+             hostPath:
+               path: /var/run/crio/crio.sock
+               type: Socket
            - name: jenkins-slave
              hostPath:
                path: /var/lib/bundle
@@ -28,6 +32,9 @@ pipeline {
             command:
               - cat
             tty: true
+            volumeMounts:
+            - name: docker
+              mountPath: /var/run/crio/crio.sock
             resources:
               requests:
                 memory: 128Mi
@@ -74,22 +81,15 @@ pipeline {
         }
       }
     }
-node {
-    checkout scm
-    docker.withRegistry('${HARBOR_URL}', 'harbor-registry') {
-        def customImage = docker.build("my-image:${env.BUILD_ID}")
-        customImage.push()
-    }
-}
-//    stage('Build Image') {
-//      steps{
-//        container('docker') {
-//          script{
-//            dockerImage = docker.build "${HARBOR_PROJECT}/itmi-core" + ":${IMAGE_TAG}"
-//             }
-//           }  
-//         }
-//       }
+    stage('Build Image') {
+      steps{
+        container('docker') {
+          script{
+            dockerImage = docker.build "${HARBOR_PROJECT}/itmi-core" + ":${IMAGE_TAG}"
+             }
+           }  
+         }
+       }
     stage('Deploy Image'){
       steps{
         container(name: 'docker') {
