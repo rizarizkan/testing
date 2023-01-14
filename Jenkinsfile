@@ -88,10 +88,10 @@ pipeline {
       steps {
        container('kaniko') {
          script{
-          sh "ls -lah"
-          sh "pwd"
-          sh "ls -lah /kaniko/"
-          sh "cat /kaniko/.docker/config.json"
+         // sh "ls -lah"
+         //sh "pwd"
+         // sh "ls -lah /kaniko/"
+         // sh "cat /kaniko/.docker/config.json"
           sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination https://dev-registry.itmi.id/glm/itmi-core:${BUILD_NUMBER}"
           }
         }
