@@ -34,7 +34,7 @@ pipeline {
             tty: true
             volumeMounts:
             - name: docker
-              mountPath: /var/run/docker.sock
+              mountPath: /run/containerd/containerd.sock
             resources:
               requests:
                 memory: 128Mi
