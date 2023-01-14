@@ -28,7 +28,7 @@ pipeline {
                 memory: 128Mi
                 cpu: 50m
           - name: docker
-            image: docker:stable
+            image: docker/containerd-shim-process
             command:
               - cat
             tty: true
