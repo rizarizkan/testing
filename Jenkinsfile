@@ -66,7 +66,7 @@ pipeline {
     HARBOR_CREDENTIALS = credentials('harbor-registry')
     HARBOR_URL = 'https://dev-registry.itmi.id'
     HARBOR_PROJECT = 'dev-registry.itmi.id/glm'
-    NAMESPACE = 'main'
+    NAMESPACE = 'default'
     BRANCH = 'main'
     IMAGE_TAG = 'main'
     RELEASE = 'core'
