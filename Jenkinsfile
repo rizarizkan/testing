@@ -15,10 +15,6 @@ pipeline {
                 items:
                 - key: .dockerconfigjson
                   path: config.json
-           - name: jenkins-slave
-             hostPath:
-               path: /var/lib/bundle
-               type: DirectoryOrCreate
           containers:
           - name: node
             image: node:latest
