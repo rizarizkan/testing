@@ -84,7 +84,7 @@ pipeline {
       steps {
        container('kaniko') {
          script{
-          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination ${HARBOR_PROJECT}/itmi-core:${BUILD_NUMBER}"
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination ${HARBOR_PROJECT}/itmi-core:${IMAGE_TAG}"
           }
         }
       }
