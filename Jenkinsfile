@@ -9,55 +9,69 @@ pipeline {
             some-label: some-label-value
         spec:
           volumes:
-           - name: docker
-             hostPath:
-               path: /var/run/docker.sock
-               type: Socket
-           - name: jenkins-slave
-             hostPath:
-               path: /var/lib/bundle
-               type: DirectoryOrCreate
+           - name: kaniko-secret
+             secret:
+                secretName: dockercred
+                items:
+                - key: .dockerconfigjson
+                  path: config.json
           containers:
           - name: node
             image: node:latest
             command:
               - cat
             tty: true
-            volumeMounts:
-              - name: jenkins-slave
-                mountPath: /var/lib/bundle
-          - name: docker
-            image: docker:stable
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 50m
+          - name: kaniko
+            image: gcr.io/kaniko-project/executor:debug
             command:
-              - cat
-            tty: true
+            - sleep
+            args:
+            - 9999999
             volumeMounts:
-              - name: docker
-                mountPath: /var/run/docker.sock
+            - name: kaniko-secret
+              mountPath: /kaniko/.docker
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 50m
           - name: curl
             image: pstauffer/curl
             command:
               - cat
             tty: true
+            resources:
+              requests:
+                memory: 64Mi
+                cpu: 50m
           - name: helm
             image: dtzar/helm-kubectl:3.9.3
             imagePullPolicy: Always
             command:
               - cat
             tty: true
+            resources:
+              requests:
+                memory: 128Mi
+                cpu: 50m
         '''
     }
   }
-  
+
   environment {
     GITHUB_COMMON_CREDS = credentials('github-itmi')
     HARBOR_CREDENTIALS = credentials('harbor-registry')
-    NAMESPACE = 'default'
+    HARBOR_URL = 'https://dev-registry.itmi.id'
+    HARBOR_PROJECT = 'dev-registry.itmi.id/glm'
+    NAMESPACE = 'main'
     BRANCH = 'main'
     IMAGE_TAG = 'main'
     RELEASE = 'core'
 }
-  
+
   stages {
     stage('Cloning Git') {
       steps{
@@ -66,38 +80,27 @@ pipeline {
         }
       }
     }
-    stage('Build Image') {
-      steps{
-        container('docker') {
-          script{
-            dockerImage = docker.build "registry.rizkan.xyz/glm/itmi-core" + ":${IMAGE_TAG}"
-             }
-           }  
-         }
-       }
-    stage('Deploy Image'){
-      steps{
-        container(name: 'docker') {
-          script {
-            withDockerRegistry(registry: [url: 'https://registry.rizkan.xyz', credentialsId: 'harbor-registry']) {
-              dockerImage.push()
-                }
-              }
-            }
+    stage('Build Image with Kaniko') {
+      steps {
+       container('kaniko') {
+         script{
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination ${HARBOR_PROJECT}/itmi-core:${IMAGE_TAG}"
           }
         }
+      }
+    }
    stage('Get K8s Yaml files') {
      steps {
-        checkout([$class: 'GitSCM', 
-            branches: [[name: '*/main']], 
-            doGenerateSubmoduleConfigurations: false, 
+        checkout([$class: 'GitSCM',
+            branches: [[name: '*/master']],
+            doGenerateSubmoduleConfigurations: false,
             extensions: [[
                 $class: 'RelativeTargetDirectory',
-                relativeTargetDir: 'itmi-core']],
-            submoduleCfg: [], 
+                relativeTargetDir: 'itmi-infra-repository']],
+            submoduleCfg: [],
             userRemoteConfigs: [[
                 credentialsId: 'github-itmi',
-                url: 'https://github.com/rizarizkan/helm-k8s.git']]])
+                url: 'https://github.com/itmi-id/itmi-infra.git']]])
          }
        }
    stage('gpg') {
@@ -121,10 +124,9 @@ pipeline {
    stage('Deploy to Kubernetes') {
      steps {
         container(name: 'helm') {
-            dir('itmi-core/itmi-core/') {
-             //sh "helm secrets upgrade --recreate-pods --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
-             sh "helm secrets upgrade --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml" 
-             sh "kubectl rollout restart -n ${NAMESPACE} deployment ${RELEASE}"
+           dir('itmi-infra-repository/helm/itmi-core') {
+           sh "helm secrets upgrade --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml"
+           sh "kubectl rollout restart -n ${NAMESPACE} deployment ${RELEASE}"
           }
         }
       }
@@ -133,5 +135,5 @@ pipeline {
 
 
   }
-  
+
 }
