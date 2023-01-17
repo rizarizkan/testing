@@ -70,6 +70,8 @@ pipeline {
     BRANCH = 'staging'
     IMAGE_TAG = 'staging'
     RELEASE = 'core'
+    IMAGE_NAME = 'itmi-core'
+    REPO_NAME = 'itmi-core'
 }
 
   stages {
@@ -84,7 +86,7 @@ pipeline {
       steps {
        container('kaniko') {
          script{
-          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination ${HARBOR_PROJECT}/itmi-core:${IMAGE_TAG}"
+          sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination ${HARBOR_PROJECT}/${IMAGE_NAME}:${IMAGE_TAG}"
           }
         }
       }
@@ -124,7 +126,7 @@ pipeline {
    stage('Deploy to Kubernetes') {
      steps {
         container(name: 'helm') {
-           dir('itmi-infra-repository/helm/itmi-core') {
+           dir('itmi-infra-repository/helm/${REPO_NAME}') {
            sh "helm secrets upgrade --install --set image.tag=${IMAGE_TAG} -n ${NAMESPACE} core . -f helm_vars/secrets-${BRANCH}.yaml"
            sh "kubectl rollout restart -n ${NAMESPACE} deployment ${RELEASE}"
           }
