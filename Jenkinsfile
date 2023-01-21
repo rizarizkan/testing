@@ -38,15 +38,6 @@ pipeline {
               requests:
                 memory: 128Mi
                 cpu: 50m
-          - name: curl
-            image: pstauffer/curl
-            command:
-              - cat
-            tty: true
-            resources:
-              requests:
-                memory: 64Mi
-                cpu: 50m
           - name: helm
             image: dtzar/helm-kubectl:3.9.3
             imagePullPolicy: Always
