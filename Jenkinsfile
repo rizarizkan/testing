@@ -105,7 +105,6 @@ pipeline {
              sh "echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories"
              sh "sed -i '/edge/s/^#//' /etc/apk/repositories"
              sh "apk --no-cache add ca-certificates gnupg"
-             //sh "apk --no-cache add gnupg"
              sh "cp \$itmigpg gpg-production.asc"
              sh "gpg --import gpg-production.asc"
              sh "helm plugin install https://github.com/jkroepke/helm-secrets.git --version v4.2.0"
